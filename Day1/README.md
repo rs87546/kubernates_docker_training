@@ -518,4 +518,7 @@ SELECT * FROM training;
 exit
 exit
 ```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/75be5b54-6e77-4977-98c5-b063cc06ed64" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/86892ea1-e141-4f80-8304-14f56848d8ee" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/59568826-91e8-4695-bd4f-85dbbc90573f" />
 
