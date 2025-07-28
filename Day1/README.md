@@ -443,3 +443,42 @@ Start the container and see, if loadbalancer is able to forward the call to star
 ```
 docker start nginx1
 ```
+
+## Lab - Let's build a custom docker image
+
+Let's create an ubuntu container
+```
+docker run -dit --name ubuntu1 --hostname ubuntu1 ubuntu:latest /bin/bash
+docker ps
+```
+
+Let's get inside the container shell
+```
+docker exec -it ubuntu1 /bin/bash
+ifconfig
+vim
+ping 8.8.8.8
+git --version
+```
+
+
+Let's install the above tools taking ubuntu:latest as the base image and let's customize. Create a file named Dockerfile
+```
+FROM ubuntu:latest
+FROM ubuntu:latest
+LABEL AUTHOR="Jeganathan Swaminathan" 
+LABEL AUTHOR_EMAIL="jegan@tektutor.org"
+
+RUN apt update && apt install -y net-tools iputils-ping vim git
+```
+
+Let's build the image
+```
+cd ~
+git clone https://github.com/tektutor/kubernetes-july-2025.git
+cd kubernetes-july-2025/Day1/CustomDockerImage
+cat Dockerfile
+docker build -t tektutor/ubuntu:latest .
+docker images
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/17dba22b-de85-4770-a207-8dee206e1a14" />
