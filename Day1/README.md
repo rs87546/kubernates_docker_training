@@ -95,6 +95,7 @@
 - using a single container image, we can create any number of containers
 - container images are similar to windows OS ISO 
 </pre>  
+![image](DockerLayers.png)
   
 ## Info - Container
 <pre>
@@ -114,3 +115,6 @@
   2. Private Docker Registry ( This can be setup using JFrog Artifactory or Sonatype Nexus )
   3. Remote Docker Registry ( this is website hub.docker.com )
 </pre>
+
+## Info - Docker High-Level Architecture
+![architecture](DockerHighLevelArchitecture.png)
