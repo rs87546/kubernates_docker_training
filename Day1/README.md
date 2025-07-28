@@ -1,1 +1,46 @@
-# Day 1
+# Day 1 (Docker)
+
+## Info - What is dual/multi-booting?
+<pre>
+- When we boot our laptop/desktop, the firmware(BIOS) runs the Power On Self Test(POST)
+- Once the BIOS POST completes, BIOS will instruct the CPU to run the Boot Loader utility
+- the Bootloader utility searches your hard disk(s) looking for Operating Systems, if it finds more than
+  one OS, then it prepares a menu and then presents you the menu for you to choose the OS you wish to boot into
+- in this way, we can support 2-3 OS in our laptop/desktop
+- the limitation is, only one OS can be active at anypoint of time
+- examples
+  - LILO ( opensource, legacy bootloader used by most older linux distributions, almost dead now )
+  - GRUB 2 -opensource, this is used by almost all linux distributions (replaces LILO)
+  - Macbooks - BootCamp (Paid)
+</pre>  
+
+## Info - Hypervisor Overview
+<pre>
+- Hypervisor is a generic term used to refer to the virtualization software/technology
+- using virtualization, we can run more than OS in the same laptop/desktop/workstation/server
+- more than one OS can be active at the same time
+- each OS that we install on top the base OS (Host OS) is referred as Guest OS
+- the Guest OS is installed on top of Virtual Machine
+- each Virtual Machine must be allocated with dedicated hardware resources
+  - CPU cores
+  - RAM
+  - Storage (HDD/SDD)
+- hence, this type of Virtualization is called Heavy-weight Virtualization  
+- the OS that runs within the Virtual Machine, is a fully functional Operating System
+- the OS has its own OS Kernel, Guest OS will not share Hardware resources with other Guest OS or Host OS
+- There are 2 types of Hypervisors
+  1. Type 1
+     - are used in Workstations & Servers
+     - bare-metal hypervisors
+     - Examples
+       - KVM
+       - VMWare vSphere/vCenter
+  2. Type 2
+     - are used in Laptops/Dekstops & Workstations
+     - Examples
+       - Oracle VirtualBox ( Windows, Linux and Mac OS-X )
+       - VMWare Workstation ( Windows & Linux )
+       - VMWare Fusion ( Mac OS-X )
+       - Parallels
+       - Microsoft Hyper-V
+</pre>pre>
