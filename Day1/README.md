@@ -169,3 +169,12 @@ docker images
 
 Expected output
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/2eadf5f4-076d-4429-9bdd-18089878e9eb" />
+
+## Lab - Downloading mysql container image from Docker Hub Remote Registry to Docker Local Registry
+```
+docker pull mysql:latest
+docker images 
+```
+
+Expected output
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/767acab5-88dd-4649-be26-a9aa141c6c6b" />
