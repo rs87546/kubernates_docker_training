@@ -270,3 +270,12 @@ curl http://172.17.0.2:80
 Expected output
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/760e2203-7728-4332-9122-897ab5c24826" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/77a4d4a1-f9bf-44c4-a1e1-42bb68c24aee" />
+
+## Lab - Troublesshooting using container logs
+```
+docker ps
+docker logs nginx
+```
+
+Expected output
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/4165da25-37d3-41c5-97fa-01e0ebf42809" />
