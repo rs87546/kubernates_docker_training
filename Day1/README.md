@@ -162,3 +162,10 @@ Expected output
 
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/2c65bff8-a11f-405e-abb4-38f6b0cdf36e" />
 
+## Lab - Listing the docker images from your Local Docker Registry
+```
+docker images
+```
+
+Expected output
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/2eadf5f4-076d-4429-9bdd-18089878e9eb" />
