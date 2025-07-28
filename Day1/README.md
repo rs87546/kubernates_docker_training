@@ -309,3 +309,78 @@ docker ps
 
 Expected output
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/a14e7f3d-5deb-4a4b-93a9-6ece7cb13026" />
+
+In order to configure the lb container as a load balancer, we must configure accordingly otherwise by default nginx containers runs as a web server.
+
+
+Let's try to locate the nginx configuratio file, for that we need to get inside the container shell
+```
+docker exec -it lb bash
+hostname
+hostname -i
+cd /etc/nginx
+ls
+more nginx.conf
+exit
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/f56b2346-098e-4ee0-b4e5-6b9defdc4ca6" />
+
+Let's copy the nginx.conf file from the lb container to local machine
+```
+docker cp lb:/etc/nginx/nginx.conf .
+cat nginx.conf
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/764ccb8d-00a5-475f-aa07-f31fd7f659b0" />
+
+Find the IP addresses of your nginx1, nginx2 and nginx3 web server containers
+```
+docker inspect -f {{.NetworkSettings.IPAddress}} nginx1
+docker inspect nginx2 | grep IPA
+docker inspect nginx3 | grep IPA
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/76563a5f-09ad-4d96-9fb4-576d88f60510" />
+
+Let's modify the nginx.conf we copied from the lb container on our local machine as shown below
+```
+
+user  nginx;
+worker_processes  auto;
+
+error_log  /var/log/nginx/error.log notice;
+pid        /run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    upstream backend {
+        server 172.17.0.2:80; 
+        server 172.17.0.3:80;
+        server 172.17.0.4:80;
+    }
+
+    server {
+        location / {
+            proxy_pass http://backend;
+        }
+    }
+}
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/032a2faa-6421-4c57-a30f-76fe73806d8f" />
+
+This update nginx.conf file we need to copy from the local machine back into the lb container
+```
+docker cp nginx.conf lb:/etc/nginx/nginx.conf
+```
+
+In order to apply the config changes we did to the lb container, we need to restart it
+```
+docker restart lb
+```
+
+Let's verify if lb container is running after our config changes
+```
+docker ps
+```
