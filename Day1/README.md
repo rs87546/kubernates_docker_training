@@ -127,4 +127,5 @@ docker info
 Expected output
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/a8f9ad93-40bd-4935-8ed2-a9d60188cd20" />
 
-  
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/2c65bff8-a11f-405e-abb4-38f6b0cdf36e" />
+
