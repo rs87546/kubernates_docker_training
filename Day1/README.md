@@ -428,3 +428,18 @@ Each time, you refresh, the response should come from a different server, basica
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/e19d575d-b2cc-4696-95c8-df749e298073" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/9e9be62c-1715-454b-b330-a8b81ff2f8a2" />
 ![lb](lb-updated.png)
+
+Check what happens if you stop one of the nginx web server containers
+```
+docker stop nginx1
+```
+
+See if the web page is still accessible via load balancer
+<pre>
+http://localhost:80  
+</pre>
+
+Start the container and see, if loadbalancer is able to forward the call to started container
+```
+docker start nginx1
+```
