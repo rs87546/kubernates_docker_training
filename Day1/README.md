@@ -44,3 +44,18 @@
        - Parallels
        - Microsoft Hyper-V
 </pre>
+
+## Info - Containerization
+<pre>
+- light-weight application virtualization technology
+- unlike the Virtualization, in case of containers, they don't get their own dedicated hardware resources
+- all containers running on the same OS, shares the Hardwares resources on the underlying OS
+- Similarities between VM & Containers
+  - every container gets its own IP Address ( usually private IPs )
+  - every container gets its own Network Stack ( 7 OSI Layers )
+  - every container gets its own software-defined virtual network card
+  - every container gets its own filesystem
+- containers will never be able to replace Virtual Machines, they are complementing technology not competing technologies
+- hence, containers and hypervisors are generally used in combination, they can co-exist
+- each container represents an application process not an OS
+</pre>
