@@ -199,6 +199,15 @@ docker images | grep hello
 Expected output
 <img width="1774" height="633" alt="image" src="https://github.com/user-attachments/assets/2178d8c8-9238-49bc-8d44-4f712ac91dd0" />
 
+In case there are containers that were created using hello-world:latest, then we must first delete the containers before deleting the docker image
+```
+docker rmi hello-world:latest
+docker rm hello-jegan
+docker rmi hello-world:latest
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/6e69f885-41ba-45f0-955d-d1bbf6275699" />
+
+
 ## Lab - Creating a container in interactive/foreground mode
 List the hello-world:latest docker image
 ```
