@@ -244,5 +244,29 @@ Expected output
 
 ## Lab - Renaming a container
 ```
-docker 
+docker rename hello hello-jegan
 ```
+
+
+## Lab - Creating a container in background(daemon) mode
+```
+docker run -d --name nginx --hostname nginx nginx:latest
+docker ps
+```
+
+Finding the IP Address of the container
+```
+docker ps
+docker inspect nginx | grep IA
+docker inspect -f {{.NetworkSettings.IPAddress}} nginx
+```
+
+Check if you are able to access the web using the IP Address of the contianer
+```
+ping 172.17.0.2
+curl http://172.17.0.2:80
+```
+
+Expected output
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/760e2203-7728-4332-9122-897ab5c24826" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/77a4d4a1-f9bf-44c4-a1e1-42bb68c24aee" />
