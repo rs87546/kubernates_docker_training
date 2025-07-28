@@ -459,8 +459,8 @@ ifconfig
 vim
 ping 8.8.8.8
 git --version
+exit
 ```
-
 
 Let's install the above tools taking ubuntu:latest as the base image and let's customize. Create a file named Dockerfile
 ```
@@ -482,3 +482,19 @@ docker build -t tektutor/ubuntu:latest .
 docker images
 ```
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/17dba22b-de85-4770-a207-8dee206e1a14" />
+
+Let's create a container using our custom image and see if the installed tools are working
+
+```
+docker run -dit --name ubuntu1 --hostname ubuntu1 tektutor/ubuntu:1.0 bash
+docker ps
+docker exec -it ubuntu1 /bin/bash
+git --version
+ifconfig
+ping 8.8.8.8
+vim
+exit
+```
+
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/10f39eaf-88c8-4b1b-bdc9-b69388b6ebec" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/6162fd28-2c43-4ba9-acf2-9bc32ef3e92a" />
