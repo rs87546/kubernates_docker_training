@@ -497,3 +497,25 @@ exit
 
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/10f39eaf-88c8-4b1b-bdc9-b69388b6ebec" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/6162fd28-2c43-4ba9-acf2-9bc32ef3e92a" />
+
+## Lab - Let's create a mysql container
+```
+docker run -d --name mysql --hostname mysql -e MYSQL_ROOT_PASSWORD=root@123 mysql:latest
+docker ps
+docker exec -it mysql /bin/sh
+
+SHOW DATABASES;
+CREATE DATABASE tektutor;
+SHOW DATABASES;
+USE tektutor;
+CREATE TABLE training ( id INT NOT NULL, training VARCHAR(300) NOT NULL, duration VARCHAR(100) NOT NULL, PRIMARY KEY(id) );
+
+INSERT INTO training VALUES ( 1, "DevOps", "5 Days" );
+INSERT INTO training VALUES ( 2, "Kubernetes", "5 Days" );
+INSERT INTO training VALUES ( 3, "Openshift", "5 Days" );
+
+SELECT * FROM training;
+exit
+exit
+```
+
