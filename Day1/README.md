@@ -105,3 +105,12 @@
   - it may the package manager, for instance in case of ubuntu image, it comes with apt(apt-get) package manager
   - it comes with maybe sh/bash terminal
 </pre>
+
+## Info - Container Registries
+<pre>
+- Container Registries helps us manage multiple container images
+- there are 3 types of Container Registries supported by Docker
+  1. Docker Local Registry ( this is folder /var/lib/docker in Linux )
+  2. Private Docker Registry ( This can be setup using JFrog Artifactory or Sonatype Nexus )
+  3. Remote Docker Registry ( this is website hub.docker.com )
+</pre>
