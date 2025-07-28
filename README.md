@@ -1,1 +1,1 @@
-# kubernetes-july-2025
+# Kubernetes July 2025
