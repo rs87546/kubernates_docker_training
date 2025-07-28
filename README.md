@@ -14,6 +14,8 @@
   - kindly ensure you are not using the demo link while connecting to your lab machine
 </pre>
 
+From the Windows Cloud Machine, you need to do remote desktop to one of the below server as per your last two digits of cloud user
+
 # Server 1 (192.168.3.19)
 Linux user credentials
 <pre>
