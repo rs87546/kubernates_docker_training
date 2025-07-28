@@ -396,3 +396,23 @@ cat default.conf
 
 The default.conf files tells the location from where the nginx web server is searching the web pages
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/549d9b56-b15e-4a74-ad10-383390c8c233" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/cf08d4ba-b56f-43df-8fa2-dd42be0ea088" />
+
+As we know the nginx web server is serving its pages from /usr/share/nginx/html folder, let's copy our custom web page over there
+```
+echo "Server 1" > index.html
+docker cp index.html nginx1:/usr/share/nginx/html/index.html
+
+echo "Server 2" > index.html
+docker cp index.html nginx2:/usr/share/nginx/html/index.html
+
+echo "Server 3" > index.html
+docker cp index.html nginx3:/usr/share/nginx/html/index.html
+```
+
+Now, let's verify if the loadbalancing is happening, you can access the loadbalancer from ubuntu lab machine chrome web browser
+```
+http://localhost
+```
+
+Each time, you refresh, the response should come from a different server, basically you should responses coming in round-robin fashion.
