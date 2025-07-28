@@ -10,6 +10,8 @@
   hence you should connect to server2
   - if your cloud user ends with let's say 03, your linux username is user03,
   hence you should connect to server1
+
+  - kindly ensure you are not using the demo link while connecting to your lab machine
 </pre>
 
 # Server 1 (192.168.3.19)
