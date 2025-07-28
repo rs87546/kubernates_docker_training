@@ -59,10 +59,28 @@
 - hence, containers and hypervisors are generally used in combination, they can co-exist
 - each container represents an application process not an OS
 - Examples
-  
+  - Docker, Podman, Containerd
 </pre>
 
+## Info - Container Runtime Overview
+<pre>
+- Container Runtime is a low-level software that helps us manage containers & images
+- they are not so user-friendly, hence normally end-users like us never use the container runtimes directly
+- examples
+  - runC, cRun, CRI-O
+</pre>
 
+## Info - Container Engine Overview
+<pre>
+- Container Engines are high-level softwares that helps us manage containers & images
+- they are highly user-friendly
+- container engines internally depends on container runtimes to manage containers & images
+- Examples
+  - Docker
+  - Podman
+</pre>  
+
+  
 ## Info - Container
 <pre>
 - is a running instance of a Container Image
