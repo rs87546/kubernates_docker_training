@@ -384,3 +384,15 @@ Let's verify if lb container is running after our config changes
 ```
 docker ps
 ```
+
+In order to customize the html page response from each nginx web server containers, we need to figure out from where nginx web server is serving its html pages.  For this we need to get inside one of the nginx webserver containers
+```
+docker exec -it nginx1 bash
+cd /etc/nginx/
+cat nginx.conf
+cd conf.d
+cat default.conf
+```
+
+The default.conf files tells the location from where the nginx web server is searching the web pages
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/549d9b56-b15e-4a74-ad10-383390c8c233" />
