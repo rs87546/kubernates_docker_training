@@ -209,6 +209,16 @@ Create a hello container in interactive/foreground mode
 ```
 docker run --name hello --hostname hello hello-world:latest
 ```
+Note
+<pre>
+- In case, your local docker registry doesn't have the hello-world:latest docker image, docker server will
+  download that for your automatically from the hub.docker.com remote docker registry
+- the downloaded image is cached in your local docker registry ( i.e /var/lib/docker folder )
+- using the local hello-world:latest image docker engine will then create the container
+- name and hostname arguments aren't mandatory
+- run commnd will create a new container and then starts running the container
+</pre>
+
 
 Listing all running containers
 ```
@@ -223,4 +233,7 @@ docker ps -a
 Expected output
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/fbbfb7bb-b255-4615-a6fa-cd745b898082" />
 
-
+## Lab - Renaming a container
+```
+docker 
+```
