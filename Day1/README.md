@@ -58,4 +58,17 @@
 - containers will never be able to replace Virtual Machines, they are complementing technology not competing technologies
 - hence, containers and hypervisors are generally used in combination, they can co-exist
 - each container represents an application process not an OS
+- Examples
+  
+</pre>
+
+
+## Info - Container
+<pre>
+- is a running instance of a Container Image
+- containers holds
+  - an application executable
+  - and its dependencies
+  - it may the package manager, for instance in case of ubuntu image, it comes with apt(apt-get) package manager
+  - it comes with maybe sh/bash terminal
 </pre>
