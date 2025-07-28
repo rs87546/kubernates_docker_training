@@ -279,3 +279,11 @@ docker logs nginx
 
 Expected output
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/4165da25-37d3-41c5-97fa-01e0ebf42809" />
+
+## Lab - Searching images from Remote Docker Registry
+```
+docker search nginx
+```
+
+Expected output
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/5801cb7c-0924-44c7-8b52-4b98a9ee4597" />
