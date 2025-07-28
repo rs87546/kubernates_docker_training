@@ -257,7 +257,7 @@ docker ps
 Finding the IP Address of the container
 ```
 docker ps
-docker inspect nginx | grep IA
+docker inspect nginx | grep IPA
 docker inspect -f {{.NetworkSettings.IPAddress}} nginx
 ```
 
