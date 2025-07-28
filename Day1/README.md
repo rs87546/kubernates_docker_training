@@ -504,6 +504,7 @@ docker run -d --name mysql --hostname mysql -e MYSQL_ROOT_PASSWORD=root@123 mysq
 docker ps
 docker exec -it mysql /bin/sh
 
+mysql -u root -p
 SHOW DATABASES;
 CREATE DATABASE tektutor;
 SHOW DATABASES;
@@ -521,4 +522,56 @@ exit
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/75be5b54-6e77-4977-98c5-b063cc06ed64" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/86892ea1-e141-4f80-8304-14f56848d8ee" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/59568826-91e8-4695-bd4f-85dbbc90573f" />
+
+
+Let's delete mysql, at this point you will also loose the data stored inside the container storage.
+```
+docker rm -f mysql
+```
+
+Let's create container that uses external storage
+```
+docker run -d --name mysql --hostname mysql -e MYSQL_ROOT_PASSWORD=root@123 -v /tmp/mysql:/var/lib/mysql mysql:latest
+docker ps
+mysql -u root -p
+SHOW DATABASES;
+CREATE DATABASE tektutor;
+SHOW DATABASES;
+USE tektutor;
+CREATE TABLE training ( id INT NOT NULL, training VARCHAR(300) NOT NULL, duration VARCHAR(100) NOT NULL, PRIMARY KEY(id) );
+
+INSERT INTO training VALUES ( 1, "DevOps", "5 Days" );
+INSERT INTO training VALUES ( 2, "Kubernetes", "5 Days" );
+INSERT INTO training VALUES ( 3, "Openshift", "5 Days" );
+
+SELECT * FROM training;
+exit
+exit
+```
+
+Let's delete the mysql container
+```
+docker rm -f mysql
+```
+
+Let's recreate a new mysql container
+```
+docker run -d --name mysql --hostname mysql -e MYSQL_ROOT_PASSWORD=root@123 -v /tmp/mysql:/var/lib/mysql mysql:latest
+docker ps
+mysql -u root -p
+SHOW DATABASES;
+USE tektutor;
+SHOW TABLES;
+
+SELECT * FROM training;
+exit
+exit
+```
+
+From this it is evident, that we have the data intact even though we replaced the mysql container with a new one.  Hence, we should use external volume while storing application logs, application data, etc.,
+
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/aa6d4e17-d908-4257-afec-13d3c7190933" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/776446b0-ffb2-4895-855e-f1e80dc79449" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/08b99078-5fb9-47db-9a2e-4653d480e96f" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/64bc29fb-996e-446b-aa69-d434aefd124f" />
 
