@@ -465,7 +465,6 @@ exit
 Let's install the above tools taking ubuntu:latest as the base image and let's customize. Create a file named Dockerfile
 ```
 FROM ubuntu:latest
-FROM ubuntu:latest
 LABEL AUTHOR="Jeganathan Swaminathan" 
 LABEL AUTHOR_EMAIL="jegan@tektutor.org"
 
