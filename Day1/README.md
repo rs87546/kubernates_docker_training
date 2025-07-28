@@ -178,3 +178,11 @@ docker images
 
 Expected output
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/767acab5-88dd-4649-be26-a9aa141c6c6b" />
+
+## Lab - Finding more details about mysql docker image
+```
+docker image inspect mysql:latest
+```
+
+Expected output
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/cf047899-b837-494a-bade-41e9e07785b2" />
