@@ -199,3 +199,28 @@ docker images | grep hello
 Expected output
 <img width="1774" height="633" alt="image" src="https://github.com/user-attachments/assets/2178d8c8-9238-49bc-8d44-4f712ac91dd0" />
 
+## Lab - Creating a container in interactive/foreground mode
+List the hello-world:latest docker image
+```
+docker images | grep hello-world
+```
+
+Create a hello container in interactive/foreground mode
+```
+docker run --name hello --hostname hello hello-world:latest
+```
+
+Listing all running containers
+```
+docker ps
+```
+
+Listing all containers irrespective of their runtime state
+```
+docker ps -a
+```
+
+Expected output
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/fbbfb7bb-b255-4615-a6fa-cd745b898082" />
+
+
