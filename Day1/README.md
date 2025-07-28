@@ -186,3 +186,6 @@ docker image inspect mysql:latest
 
 Expected output
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/cf047899-b837-494a-bade-41e9e07785b2" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/c998a11a-85e7-42af-b0f8-57beb21e52e6" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/e53fd840-d2c8-4439-9548-2db079783ba9" />
+
