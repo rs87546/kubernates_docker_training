@@ -287,3 +287,25 @@ docker search nginx
 
 Expected output
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/5801cb7c-0924-44c7-8b52-4b98a9ee4597" />
+
+## Lab - Setting up a loadbalancer with 3 nginx web server backends
+Let's create 3 nginx web server containers
+```
+docker run -d --name nginx1 --hostname nginx1 nginx:latest
+docker run -d --name nginx2 --hostname nginx2 nginx:latest
+docker run -d --name nginx3 --hostname nginx3 nginx:latest
+```
+
+List and see if the 3 web server containers you created are running
+```
+docker ps
+```
+
+Let's create a lb container
+```
+docker run -d --name lb --hostname lb -p 80:80 nginx:latest
+docker ps
+```
+
+Expected output
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/a14e7f3d-5deb-4a4b-93a9-6ece7cb13026" />
