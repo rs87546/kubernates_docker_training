@@ -409,6 +409,14 @@ docker cp index.html nginx2:/usr/share/nginx/html/index.html
 echo "Server 3" > index.html
 docker cp index.html nginx3:/usr/share/nginx/html/index.html
 ```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/df10d9e5-19c2-4dad-9d8c-fcf2764efd00" />
+
+Let's test if load balancing is working
+```
+http://localhost
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/31b7f57a-4fc5-499b-aa5c-1384e468b8e4" />
+
 
 Now, let's verify if the loadbalancing is happening, you can access the loadbalancer from ubuntu lab machine chrome web browser
 ```
