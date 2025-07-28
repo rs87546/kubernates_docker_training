@@ -189,3 +189,13 @@ Expected output
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/c998a11a-85e7-42af-b0f8-57beb21e52e6" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/e53fd840-d2c8-4439-9548-2db079783ba9" />
 
+## Lab - Deleting a docker image from your local docker registry
+```
+docker images | grep hello
+docker rmi hello-world:latest
+docker images | grep hello
+```
+
+Expected output
+<img width="1774" height="633" alt="image" src="https://github.com/user-attachments/assets/2178d8c8-9238-49bc-8d44-4f712ac91dd0" />
+
