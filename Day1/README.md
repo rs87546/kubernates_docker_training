@@ -119,6 +119,14 @@
 ## Info - Docker High-Level Architecture
 ![architecture](DockerHighLevelArchitecture.png)
 
+## Info - Docker Overview
+<pre>
+- Docker is developed in Google's Go language
+- Docker comes in 2 flavours
+  1. Docker Community Edition - Docker CE ( Opensource, functionally same as Docker EE )
+  2. Docker Enterprise Edition - Docker EE ( Paid software used by most software companies )
+</pre>
+
 ## Lab - Checking the docker version
 ```
 docker --version
