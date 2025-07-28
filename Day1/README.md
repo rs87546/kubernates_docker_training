@@ -87,7 +87,14 @@
   - Podman
 </pre>  
 
-## 
+## Info - Container Images
+<pre>
+- is a blueprint of container
+- whatever applications/tools we need in a container, we can build/prepare a container image with those tools pre-installed
+- when we create containers using the container image, all the tools we installed on the image are readily available in each containers
+- using a single container image, we can create any number of containers
+- container images are similar to windows OS ISO 
+</pre>  
   
 ## Info - Container
 <pre>
