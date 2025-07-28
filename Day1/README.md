@@ -127,7 +127,7 @@
   2. Docker Enterprise Edition - Docker EE ( Paid software used by most software companies )
 </pre>
 
-## Info - Installing Docker CE in Ubuntu
+## Info - Installing Docker CE in Ubuntu ( Do not try this in our lab machine, this is just for your future reference )
 ```
 # Add Docker's official GPG key:
 sudo apt-get update
