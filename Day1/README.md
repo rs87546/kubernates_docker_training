@@ -45,6 +45,13 @@
        - Microsoft Hyper-V
 </pre>
 
+## Info - Linux Kernel Features that makes containerization possible
+<pre>
+1. Namespace and
+   - are used to isolate one container from the other
+2. Control Groups (CGroups)
+</pre>  
+
 ## Info - Containerization
 <pre>
 - light-weight application virtualization technology
