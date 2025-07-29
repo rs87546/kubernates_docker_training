@@ -86,3 +86,24 @@ Expected
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/5ff35a42-b332-43cb-9dc5-43bc404c001e" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/0b0efb46-ea36-49be-8f57-7c8ed956465a" />
 
+## Info - Kubernetes Resources/Objects
+<pre>
+- Pod
+- ReplicaSet
+- Deployment
+- DaemonSet
+- StatefulSet
+- Job
+- CronJob
+- Service
+</pre>
+
+#### Pod
+<pre>
+- is a group of related containers
+- all containers that are part of a Pod shares the same IP Address
+- all containers that are part of a Pod shares the same Port Range ( 0 to 65535 Ports )
+- every container has its own filesystem though they are part of a Pod
+- Pod is a logical grouping of containers
+- though technically we can run many containers/applications, ideally only one main application should be ther per Pod
+</pre>
