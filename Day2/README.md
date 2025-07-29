@@ -306,3 +306,4 @@ As the Pod IP is private IP, we won't be able to ping them from our local machin
 minikube ssh
 curl http://10.244.0.6:80
 ```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/1a23957f-8102-4f24-9c2c-90502f9adf6a" />
