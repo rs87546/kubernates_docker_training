@@ -197,3 +197,34 @@ kubectl get ns
 ```
 
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/30fef731-86bd-42a8-a6c1-7c49f92c3d6b" />
+
+## Lab - Deploying your first application into Kubernetes
+In the below command, replace jegan with your namespace
+```
+kubectl create deploy nginx --image=nginx:latest --replicas=3 -n jegan
+```
+
+List the deployments
+```
+kubectl get deployments
+kubectl get deployment
+kubectl get deploy
+```
+
+List the replicasets
+```
+kubectl get replicasets
+kubectl get replicaset
+kubectl get rs
+```
+
+List the pods
+```
+kubectl get pods
+kubectl get pod
+kubectl get po
+```
+
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/f4d02fc7-901a-4e09-be60-89e3674c05e9" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/02e359ef-17c8-441e-979d-5f30a18a33c1" />
+
