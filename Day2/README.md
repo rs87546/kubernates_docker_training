@@ -301,3 +301,8 @@ kuebctl get noes -o wide
 ```
 <img width="1942" height="409" alt="image" src="https://github.com/user-attachments/assets/08a337b9-0029-42e5-8e8d-6491c23bff2d" />
 
+As the Pod IP is private IP, we won't be able to ping them from our local machine, however we can get inside the minikube node and ping them
+```
+minikube ssh
+curl http://10.244.0.6:80
+```
