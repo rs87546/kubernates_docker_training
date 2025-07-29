@@ -364,7 +364,7 @@ kubectl edit rs/nginx-54c98b4f84
 
 Edit the pod
 ```
-oc edit pod/nginx-54c98b4f84-kgztm
+kubectl edit pod/nginx-54c98b4f84-kgztm
 ```
 
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0f35d798-f7d4-479b-866e-386cd94494dc" />
