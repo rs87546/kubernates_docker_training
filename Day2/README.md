@@ -56,6 +56,7 @@
       - Controller Managers - group of controllers
     - Control Plane components only runs in the master node
     - generally the master node will not allow deploying user applications
+    - if required can be configured to allow deploying user applications 
   - Worker Node
     - this is where user containerized applicaitons will be running
     
