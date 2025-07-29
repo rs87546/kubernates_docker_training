@@ -71,4 +71,5 @@ minikube start
 
 Expected 
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/5ff35a42-b332-43cb-9dc5-43bc404c001e" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/0b0efb46-ea36-49be-8f57-7c8ed956465a" />
 
