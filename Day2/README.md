@@ -170,3 +170,10 @@ kubectl get pods --all-namspaces
 
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/0ab4d621-b440-4628-ae6e-a3eba88310a1" />
 
+## Lab - Listing the namespaces in your Kubernetes cluster
+```
+kuebctl get namespaces
+```
+
+<img width="1171" height="475" alt="image" src="https://github.com/user-attachments/assets/02fe0bf9-24fa-4b09-ae69-9aaa53d1a9f8" />
+
