@@ -107,4 +107,6 @@ Expected
 - Pod is a logical grouping of containers
 - though technically we can run many containers/applications, ideally only one main application should be ther per Pod
 - the smallest unit that can be deployed into Kubernetes
+- every Pod has one secret infra-container called pause container
+- the job of pause container to provide network to the application container with the Pod
 </pre>
