@@ -144,11 +144,20 @@ exit
 
 ## Lab - Listing the nodes in a Kubernetes cluster
 ```
-kubectl get nodes
+kubectl get nodes 
+kubectl get node
 kubectl describe node/minikube
 ```
 
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/6c3dfaca-bfb3-42ce-813b-900e6b9d21fb" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/bee7211c-7c5b-42cb-b029-5eeab642cd68" />
-
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/2f24600e-faa9-49c4-9290-3105635b2a98" />
+
+## Lab - Listing the control plane components
+```
+kubectl get pods -n kube-system
+```
+
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/f140d4b2-51ba-4a1c-803b-ac7dc60d5197" />
+
+
