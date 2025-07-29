@@ -106,4 +106,5 @@ Expected
 - every container has its own filesystem though they are part of a Pod
 - Pod is a logical grouping of containers
 - though technically we can run many containers/applications, ideally only one main application should be ther per Pod
+- the smallest unit that can be deployed into Kubernetes
 </pre>
