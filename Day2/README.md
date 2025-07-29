@@ -110,3 +110,32 @@ Expected
 - every Pod has one secret infra-container called pause container
 - the job of pause container to provide network to the application container with the Pod
 </pre>
+
+## Lab - Creating a Pod using Docker
+Create a pause container to support network for nginx web server container
+```
+docker run -d --name nginx-pause --hostname nginx registry.k8s.io/pause:latest
+docker ps
+```
+
+Let's create the nginx web server container and connect it with the nginx-pause container's network
+```
+docker run -d --name nginx --network=container:nginx-pause nginx:latest
+docker ps
+```
+
+Let's find the IP address of the nginx-pause container
+```
+docker inspect nginx-pause | grep IPA
+```
+
+Let's get inside the nginx container shell
+```
+docker exec -it nginx /bin/sh
+hostname
+hostname -i
+exit
+```
+
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/6a7cf01a-a916-430c-b10e-2ac095bb44e0" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/4eb85229-0d73-43be-9bf3-a59ff1804890" />
