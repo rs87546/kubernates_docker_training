@@ -109,6 +109,8 @@ Expected
 - the smallest unit that can be deployed into Kubernetes
 - every Pod has one secret infra-container called pause container
 - the job of pause container to provide network to the application container with the Pod
+- every Pod will have one pause-container
+- every Pod should have just one main application
 </pre>
 
 ## Lab - Creating a Pod using Docker
