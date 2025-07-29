@@ -408,6 +408,15 @@ kubectl describe svc/nginx
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/8cd0e786-2729-40c9-9690-ac99a2ca4511" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7c57d71e-f8e6-495c-9b36-afe8361a0e1b" />
 
+Testing/Accessing the clusterip internal service
+```
+kubectl debug -it nginx-54c98b4f84-5tgq7 --image=tektutor/hello-ms:1.0 --target=nginx -- /bin/sh
+wget http://nginx:80
+cat index.html
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/24473099-507d-4eb1-990b-0226e7f36f73" />
+
+
 ### Lab - Getting all the events related to Pod with a particular label
 ```
 kubectl get pods -l app=nginx -n jegan -o name | \                         
