@@ -392,3 +392,18 @@ Service Discovery is nothing but resolving a service name to its respective IP A
 - when we create service, its get a unique name and service IP
 - the name of the service can be used in your application 
 </pre>
+
+## Lab - Creating a clusterip internal service for our nginx deployment using imperative command
+```
+kubectl get deployments
+kubectl expose deploy/nginx --type=ClusterIP --port=80
+
+kubectl get services
+kubectl get service
+kubectl get svc
+
+kubectl describe svc/nginx
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/8cd0e786-2729-40c9-9690-ac99a2ca4511" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7c57d71e-f8e6-495c-9b36-afe8361a0e1b" />
