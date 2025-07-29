@@ -407,3 +407,13 @@ kubectl describe svc/nginx
 
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/8cd0e786-2729-40c9-9690-ac99a2ca4511" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7c57d71e-f8e6-495c-9b36-afe8361a0e1b" />
+
+### Lab - Getting all the events related to Pod with a particular label
+```
+kubectl get pods -l app=nginx -n jegan -o name | \                         
+pipe> xargs -I{} kubectl describe {} -n jegan | grep -A20 "Events"
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/bf7eb859-3005-4344-8152-ef5004f29184" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4c825221-ec3e-41d7-adb7-4c9c3a651eac" />
+
