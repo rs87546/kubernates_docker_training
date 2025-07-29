@@ -123,6 +123,18 @@ kubectl config use-context jegan
 - every Pod should have just one main application
 </pre>
 
+## Info - ReplicaSet
+
+## Info - Deployment
+<pre>
+- any stateless application can be deployed as deployment
+- Deployment is a resource/object supported by Kubernetes
+- Deployment is a YAML definition that is stored inside etcd database
+- Deployment is taken input by Deployment Controller, Deployment Controller manages Deployment
+- Deployment represents your stateless application running inside the k8s cluster
+
+</pre>
+
 ## Lab - Creating a Pod using Docker
 Create a pause container to support network for nginx web server container
 ```
@@ -233,3 +245,32 @@ kubectl get po -n jegan
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/f4d02fc7-901a-4e09-be60-89e3674c05e9" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/02e359ef-17c8-441e-979d-5f30a18a33c1" />
 
+
+## Info - What happens when we issue the below command inside Kubernetes cluster
+```
+kubectl create deploy nginx --image=nginx:latest --replicas=3 -n jegan
+
+```
+
+<pre>
+- kubectl is a client tools, that helps us interacting with Kubernetes cluster
+- kubectl is REST API client tool
+- kubectl makes a REST API call to API server when we issue the above command
+- API Server which runs in the master node(s), receives the request, it then creates a Deployment record(yaml) in etcd database
+- API Server then sends a broadcasting event saying new Deployment created
+- Deployment Controller which is part of Controller Managers Control Plane components.  It runs in every master node.
+- Deployment Controller receives the new Deployment created event sent by API server, it then sends a REST API call requesting API Server to create a replicaset for nginx deployment
+- API Server receives the request, it then creates a ReplicaSet database entry(record) in etcd database
+- API Server then sends a broadcasting event saying new ReplicaSet created
+- ReplicaSet Controller is part of Controller Managers Control Plane Components.  ReplicaSet controller receives this event, it then understand 3 Pods must be created.
+- ReplicaSet Controller makes a REST call to API Server, requesting it to create 3 Pods
+- API Server creates 3 Pod(YAML) records in the etcd database
+- API Server will send broadcasting events saying new Pod created, there will one event broadcasted for each Pod
+- Scheduler receives the new Pod created event, it then identifies a healthy node where the new Pod can be scheduled
+- Scheduler then sends its scheduling recommendations to the API Server via REST call
+- API Server receives the scheduling recommendations from Scheduler, it retrieves the existing Pod records from etcd database, it then updates the scheduling information on the respective Pod database entry
+- API Server sends broadcasting event saying Pod scheduled to so and so node
+- kubelet container agent running on the respective node receives the event, it then pulls the respective container image, it then creates the Pod containers 
+- kubelet then monitors the Pod containers, it keeps reporting the status of all the containers managed by kubelet to the API Server periodically like heart-beat event via REST call
+
+</pre>
