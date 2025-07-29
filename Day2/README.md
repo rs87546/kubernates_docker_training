@@ -307,3 +307,16 @@ minikube ssh
 curl http://10.244.0.6:80
 ```
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/1a23957f-8102-4f24-9c2c-90502f9adf6a" />
+
+## Lab - Using port-forwarding for testing purpose ( Not to be used in production )
+```
+kubectl get pods -n jegan
+kubectl port-forward pod/nginx-54c98b4f84-kgztm -n jegan 8080:80
+```
+
+From another terminal window, you try accessing the web page
+```
+curl http://localhost:8080
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4f391947-24cc-4dfd-a45d-a0edb458921c" />
