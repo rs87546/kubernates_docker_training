@@ -141,3 +141,11 @@ exit
 
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/6a7cf01a-a916-430c-b10e-2ac095bb44e0" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/4eb85229-0d73-43be-9bf3-a59ff1804890" />
+
+## Lab - Listing the nodes in a Kubernetes cluster
+```
+kubectl get nodes
+kubectl describe node/minikube
+```
+
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/6c3dfaca-bfb3-42ce-813b-900e6b9d21fb" />
