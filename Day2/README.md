@@ -59,7 +59,20 @@
     - if required can be configured to allow deploying user applications 
   - Worker Node
     - this is where user containerized applicaitons will be running
-    
+  - tools
+    - kubeadm
+      - is a Kubernetes administration tool
+      - it is used to bootstrap(setup) master nodes
+      - it is also used to add additional master/worker nodes to the Kubernetes cluster
+      - it is also useful incase you wish to remove some nodes from the Kubernetes cluster
+    - kubelet
+      - is service that runs in all Kubernetes Master & Worker Nodes
+      - we will not directly interact with it
+      - this component interacts with the Container Runtime
+      - this component will download required container image, create and manage Pods, etc., 
+    - kubectl
+      - client tool that helps us interact with Kubernetes cluster
+  
 </pre>
 
 ## Demo - Install minikube kubernetes cluster
