@@ -89,7 +89,11 @@ Expected
 ## Info - Troubleshooting minikube start
 ```
 minikube start --driver=docker --profile=<your-unique-name>
-
+minikube profile list
+# Switch to your profile
+minikube profile <your-profile-name>
+kubectl --context=minikube--jegan-cluster get nodes
+kubectl config use-context minikube--jegan-cluster
 ```
 
 ## Info - Kubernetes Resources/Objects
