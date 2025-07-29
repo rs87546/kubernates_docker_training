@@ -245,6 +245,25 @@ kubectl get po -n jegan
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/f4d02fc7-901a-4e09-be60-89e3674c05e9" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/02e359ef-17c8-441e-979d-5f30a18a33c1" />
 
+Checking events related to deployment
+```
+kubectl describe deploy/nginx -n jegan
+```
+
+Checking events related to replicaset
+```
+kubectl describe rs/nginx-nginx-54c98b4f84-zv72k
+```
+
+Checking events related to pod
+```
+kubectl describe pod/nginx-54c98b4f84-zv72k
+```
+
+In general, you wish to see all events
+```
+kubectl get events -n jegan
+```
 
 ## Info - What happens when we issue the below command inside Kubernetes cluster
 ```
