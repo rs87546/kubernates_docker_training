@@ -187,3 +187,13 @@ kuebctl get namespaces
 
 <img width="1171" height="475" alt="image" src="https://github.com/user-attachments/assets/02fe0bf9-24fa-4b09-ae69-9aaa53d1a9f8" />
 
+## Lab - Let's create a namespace to deploy applications
+Replace 'jegan' with your name
+```
+kubectl create namespace jegan
+kubectl get namespaces
+kubectl get namespace
+kubectl get ns
+```
+
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/30fef731-86bd-42a8-a6c1-7c49f92c3d6b" />
