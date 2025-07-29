@@ -163,4 +163,10 @@ kubectl get po -n kube-system
 
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/f140d4b2-51ba-4a1c-803b-ac7dc60d5197" />
 
+You could also list all pods from all namespaces as shown below
+```
+kubectl get pods --all-namspaces
+```
+
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/0ab4d621-b440-4628-ae6e-a3eba88310a1" />
 
