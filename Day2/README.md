@@ -272,5 +272,5 @@ kubectl create deploy nginx --image=nginx:latest --replicas=3 -n jegan
 - API Server sends broadcasting event saying Pod scheduled to so and so node
 - kubelet container agent running on the respective node receives the event, it then pulls the respective container image, it then creates the Pod containers 
 - kubelet then monitors the Pod containers, it keeps reporting the status of all the containers managed by kubelet to the API Server periodically like heart-beat event via REST call
-
 </pre>
+![deployment](deployment.png)
