@@ -328,3 +328,4 @@ To stop the port-forward, press Ctrl+C on the terminal where ran did port-forwar
 kubectl config set-context --current --namespace=jegan
 kubectl get deploy,rs,po
 ```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/6bb7db56-fca5-45e6-a758-2c93a26518d3" />
