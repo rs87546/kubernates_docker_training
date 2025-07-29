@@ -370,3 +370,25 @@ kubectl edit pod/nginx-54c98b4f84-kgztm
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0f35d798-f7d4-479b-866e-386cd94494dc" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d697583a-d521-44cc-a8a4-9dd15373a6dd" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7282402d-e835-4d80-84a9-a108a00ca24b" />
+
+## Lab - Creating a Pod and getting inside the Pod shell
+```
+kubectl debug -it nginx-54c98b4f84-kgztm --image=nginx:latest --target=nginx -- /bin/sh
+ls
+cat /etc/resolv.conf
+exit
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4d256648-1473-4221-af90-e33048e7575b" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/81e8a893-0a23-4e60-9d3d-ec13cccecd81" />
+
+The /etc/resolv.conf points a DNS Service running within the Kubernetes cluster, this DNS Pod supports the service discovery within Kubernetes cluster. 
+Service Discovery is nothing but resolving a service name to its respective IP Address.
+
+
+## Info - Kubernetes Service
+<pre>
+- Service represents a group of load-balanced pods from a single deployment
+- this is a way we can expose our application within the cluster or to the external world
+- when we create service, its get a unique name and service IP
+- the name of the service can be used in your application 
+</pre>
