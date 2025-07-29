@@ -329,3 +329,44 @@ kubectl config set-context --current --namespace=jegan
 kubectl get deploy,rs,po
 ```
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/6bb7db56-fca5-45e6-a758-2c93a26518d3" />
+
+## Lab - Editing deploy, replicaset, pods
+
+```
+kubectl config set-context --current --namespace=jegan
+kubectl edit deploy/nginx
+kubectl edit rs/nginx-nginx-54c98b4f84
+kubectl edit pod/nginx-54c98b4f84-kgztm
+```
+
+Find the namespace your context is pointing to
+```
+kubectl config view --minify | grep namespace
+```
+
+Edit the deploy 
+```
+kubectl edit deploy/nginx
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/b3e64d64-6efd-4bb7-a1c5-d0de3307a0f7" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/8dceb763-0681-45e3-a0fe-d3930dc00c60" />
+
+
+Edit the replicaset
+```
+kubectl edit rs/nginx-54c98b4f84
+```
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/9e5d9bce-457a-4881-8851-50b5a611181c" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/2b896a9f-d966-46f8-a2c4-cd844ba1eacf" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/45c4fd43-f95f-4ec9-8e1d-3972f2eb44cc" />
+
+
+Edit the pod
+```
+oc edit pod/nginx-54c98b4f84-kgztm
+```
+
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/0f35d798-f7d4-479b-866e-386cd94494dc" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/d697583a-d521-44cc-a8a4-9dd15373a6dd" />
+<img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/7282402d-e835-4d80-84a9-a108a00ca24b" />
