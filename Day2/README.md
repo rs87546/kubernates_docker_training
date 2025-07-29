@@ -156,6 +156,9 @@ kubectl describe node/minikube
 ## Lab - Listing the control plane components
 ```
 kubectl get pods -n kube-system
+kubectl get pod -n kube-system
+kubectl get po -n kube-system
+
 ```
 
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/f140d4b2-51ba-4a1c-803b-ac7dc60d5197" />
