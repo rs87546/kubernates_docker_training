@@ -203,6 +203,11 @@ In the below command, replace jegan with your namespace
 ```
 kubectl create deploy nginx --image=nginx:latest --replicas=3 -n jegan
 ```
+<pre>
+- In the above command, we have created a deployment named nginx in the namespace jegan
+- replicas, indicates the number of Pods instance you wish created within the deployment nginx
+- image=nginx:latest tells, that the Pods should be created using nginx:latest image from docker hub registry
+</pre>
 
 List the deployments
 ```
