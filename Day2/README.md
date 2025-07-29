@@ -293,3 +293,11 @@ kubectl create deploy nginx --image=nginx:latest --replicas=3 -n jegan
 - kubelet then monitors the Pod containers, it keeps reporting the status of all the containers managed by kubelet to the API Server periodically like heart-beat event via REST call
 </pre>
 ![deployment](deployment.png)
+
+## Lab - Finding IP Address of Node and Pods
+```
+kubectl get pods -o wide
+kuebctl get noes -o wide
+```
+<img width="1942" height="409" alt="image" src="https://github.com/user-attachments/assets/08a337b9-0029-42e5-8e8d-6491c23bff2d" />
+
