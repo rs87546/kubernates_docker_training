@@ -426,3 +426,19 @@ pipe> xargs -I{} kubectl describe {} -n jegan | grep -A20 "Events"
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/bf7eb859-3005-4344-8152-ef5004f29184" />
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4c825221-ec3e-41d7-adb7-4c9c3a651eac" />
 
+## Info - ReplicationController
+<pre>
+- is one of the resource supported by Kubernetes
+- this was the way we could deploy stateless applications into Kubernetes in older versions
+- ReplicationController does 2 things
+  - it supports rolling update
+  - it also supports scale up/down
+  - this kind of violates Single Responsibility Principle(SOLID)
+  - this doesn't support declaratively performing rolling update or scale up/down, hence Google(K8s team) deprecated use of ReplicationController
+  - in exchange of ReplicationController, they introduced Deployment and Replicaset for deploying stateless applications into Kubernetes
+  - for backward compatility and to support legacy applications, ReplicationController is still there but we are not supposed use it for deploying new applications
+  - Deployment Controller
+    - supports Rolling update
+  - ReplicaSet Controller
+    - supports scale up/down
+</pre>
