@@ -211,23 +211,23 @@ kubectl create deploy nginx --image=nginx:latest --replicas=3 -n jegan
 
 List the deployments
 ```
-kubectl get deployments
-kubectl get deployment
-kubectl get deploy
+kubectl get deployments -n jegan
+kubectl get deployment -n jegan
+kubectl get deploy -n jegan
 ```
 
 List the replicasets
 ```
-kubectl get replicasets
-kubectl get replicaset
-kubectl get rs
+kubectl get replicasets -n jegan
+kubectl get replicaset -n jegan
+kubectl get rs -n jegan
 ```
 
 List the pods
 ```
-kubectl get pods
-kubectl get pod
-kubectl get po
+kubectl get pods -n jegan
+kubectl get pod -n jegan
+kubectl get po -n jegan
 ```
 
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/f4d02fc7-901a-4e09-be60-89e3674c05e9" />
