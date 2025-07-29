@@ -322,3 +322,9 @@ curl http://localhost:8080
 <img width="1920" height="1200" alt="image" src="https://github.com/user-attachments/assets/4f391947-24cc-4dfd-a45d-a0edb458921c" />
 
 To stop the port-forward, press Ctrl+C on the terminal where ran did port-forward command.
+
+## Lab - Setting the context to your namespace
+```
+kubectl config set-context --current --namespace=jegan
+kubectl get deploy,rs,po
+```
