@@ -1,6 +1,36 @@
 # Day 3
 
 ## Demo - Installing a HA Kubernetes cluster with 3 worker nodes
+
+#### Install KVM Hypervisor in Ubuntu Server
+```
+sudo apt update
+sudo apt-get install -y curl gnupg software-properties-common
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
+https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
+sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt-get update
+
+sudo apt-get install -y qemu-system libvirt-daemon-system libvirt-clients ebtables dnsmasq \
+                        libxslt-dev libxml2-dev libvirt-dev zlib1g-dev ruby-dev \
+                        bridge-utils libguestfs-tools gcc make virt-manager guestfs-tools \
+                        qemu-kvm virt-viewer cloud-image-utils vagrant -y
+
+sudo usermod -aG libvirt $(whoami)
+sudo usermod -aG kvm $(whoami)     
+vagrant plugin install vagrant-libvirt
+vagrant plugin list
+
+sudo apt install net-tools neovim tree iputils-ping tmux git
+
+sudo adduser root kvm
+sudo systemctl enable --now libvirtd
+sudo systemctl status libvirtd
+```
+
+Let's clone the kubespray
+
 ```
 cd ~
 git clone https://github.com/kubernetes-sigs/kubespray.git
