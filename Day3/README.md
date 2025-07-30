@@ -194,7 +194,7 @@ sudo virt-install \
 ```
 
 #### Configure HAProxy Virtual Machine
-From the Ubuntu Server, login to HAProxy VM
+From the Ubuntu Server, login to HAProxy VM (Ideally, you will have the VM window open, hence SSH is not required )
 ```
 ssh root@192.168.100.10
 ```
@@ -276,7 +276,7 @@ ufw default allow outgoing
 ```
 
 #### Configure Master01 Virtual Machine
-From the Ubuntu Server, login to Master01 VM
+From the Ubuntu Server, login to Master01 VM (Ideally, you will have the VM window open, hence SSH is not required )
 ```
 ssh root@192.168.100.11
 ```
@@ -385,7 +385,7 @@ sudo systemctl restart kubelet
 ```
 
 #### Configure Master02 Virtual Machine
-From the Ubuntu Server, login to Master02 VM
+From the Ubuntu Server, login to Master02 VM, (Ideally, you will have the VM window open, hence SSH is not required )
 ```
 ssh root@192.168.100.12
 ```
@@ -495,7 +495,7 @@ sudo systemctl restart kubelet
 ```
 
 #### Configure Master03 Virtual Machine
-From the Ubuntu Server, login to Master03 VM
+From the Ubuntu Server, login to Master03 VM (Ideally, you will have the VM window open, hence SSH is not required )
 ```
 ssh root@192.168.100.13
 ```
@@ -605,7 +605,7 @@ sudo systemctl restart kubelet
 ```
 
 #### Configure Worker01 Virtual Machine
-From the Ubuntu Server, login to Worker01 VM
+From the Ubuntu Server, login to Worker01 VM (Ideally, you will have the VM window open, hence SSH is not required )
 ```
 ssh root@192.168.100.14
 ```
@@ -715,7 +715,7 @@ sudo systemctl restart kubelet
 ```
 
 #### Configure Worker02 Virtual Machine
-From the Ubuntu Server, login to Worker02 VM
+From the Ubuntu Server, login to Worker02 VM (Ideally, you will have the VM window open, hence SSH is not required )
 ```
 ssh root@192.168.100.15
 ```
@@ -825,7 +825,7 @@ sudo systemctl restart kubelet
 ```
 
 #### Configure Worker03 Virtual Machine
-From the Ubuntu Server, login to Worker03 VM
+From the Ubuntu Server, login to Worker03 VM (Ideally, you will have the VM window open, hence SSH is not required )
 ```
 ssh root@192.168.100.16
 ```
