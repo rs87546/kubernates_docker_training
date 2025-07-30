@@ -944,7 +944,14 @@ mkdir -p $HOME/.kube
 sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
 sudo chown $(id -u):$(id -g) $HOME/.kube/config
 
+# Initially kubectl commands will not work, hence you use. Once etcd,  apiserver, scheduler, controller manager and kube-proxy pods starts running
+# and they are stable, you can try kubectl commands  
+crictl ps
+crictl logs <etcd-container-name>
+crictl logs <api-server-container-name>
+
 kubectl get nodes
+kubectl get pods --all-namespaces
 
 # Wait for all the pods to settle down as initially it will keep crashing, once things settle down
 # Download the calico.yaml
