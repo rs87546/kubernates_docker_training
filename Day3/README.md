@@ -112,7 +112,10 @@ cd kuberspray
 cp -r inventory/sample inventory/mycluster
 # We need to modify inventory/mycluster/inventory.ini, inventory/mycluster/group_vars/all.yml and inventory/mycluster/group_vars/k8s_cluster.yml
 
+# we need to generate, key pair ( accept all defaults )
+ssh-keygen
+
 ansible-playbook -i inventory/mycluster/ cluster.yml -b -v \
-  --private-key=~/.ssh/private_key
+  --private-key=~/.ssh/id_ed25519
 ```
 
