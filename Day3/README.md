@@ -138,6 +138,10 @@ sudo virt-install \
 
 Configuring the network
 ```
+virsh net-list --all
+virsh net-start default
+virsh net-autostart default
+
 ip link show
 
 nmcli con add type ethernet con-name enp1s0 ifname enp1s0 \
