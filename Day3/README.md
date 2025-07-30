@@ -384,6 +384,20 @@ sudo systemctl restart kubelet
 sudo systemctl restart kubelet
 ```
 
+containerd
+```
+sudo sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+sudo systemctl restart containerd
+```
+
+kubelet (ensure this is set)
+```
+sudo mkdir -p /var/lib/kubelet
+echo "KUBELET_EXTRA_ARGS=--cgroup-driver=systemd" | sudo tee /etc/default/kubelet
+sudo systemctl daemon-reexec
+sudo systemctl restart kubelet
+```
+
 #### Configure Master02 Virtual Machine
 From the Ubuntu Server, login to Master02 VM, (Ideally, you will have the VM window open, hence SSH is not required )
 ```
