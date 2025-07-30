@@ -51,8 +51,8 @@ Vagrant.configure("2") do |config|
 
   # Provision all VMs: set vagrant and root user password, enable password auth
   config.vm.provision "shell", privileged: true, inline: <<-SHELL
-    echo 'vagrant:vagrantpassword' | chpasswd
-    echo 'root:vagrantpassword' | chpasswd
+    echo 'vagrant:vagrant' | chpasswd
+    echo 'root:root' | chpasswd
     sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
     sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
     sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
