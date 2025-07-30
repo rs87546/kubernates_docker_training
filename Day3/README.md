@@ -79,17 +79,119 @@ vagrant up
 ```
 sudo virt-builder -l
 
-sudo virt-builder fedora-41  --format qcow2 \
-  --size 20G -o /var/lib/libvirt/images/ocp-bastion-server.qcow2 \
+sudo virt-builder debian-12  --format qcow2 \
+  --size 1000G -o /var/lib/libvirt/images/haproxy.qcow2 \
   --root-password password:Root@123
 
 sudo virt-install \
-  --name ocp-bastion-server \
-  --ram 4096 \
-  --vcpus 2 \
-  --disk path=/var/lib/libvirt/images/ocp-bastion-server.qcow2 \
-  --os-variant rhel8.0 \
-  --network bridge=openshift4 \
+  --name haproxy \
+  --ram 131072 \
+  --vcpus 10 \
+  --disk path=/var/lib/libvirt/images/haproxy.qcow2 \
+  --os-variant debian12 \
+  --network bridge=k8s \
+  --graphics none \
+  --serial pty \
+  --console pty \
+  --boot hd \
+  --import
+
+sudo virt-builder debian-12  --format qcow2 \
+  --size 1000G -o /var/lib/libvirt/images/master01.qcow2 \
+  --root-password password:Root@123
+
+sudo virt-install \
+  --name master01 \
+  --ram 131072 \
+  --vcpus 10 \
+  --disk path=/var/lib/libvirt/images/master01.qcow2 \
+  --os-variant debian12 \
+  --network bridge=k8s \
+  --graphics none \
+  --serial pty \
+  --console pty \
+  --boot hd \
+  --import
+
+sudo virt-builder debian-12  --format qcow2 \
+  --size 1000G -o /var/lib/libvirt/images/master02.qcow2 \
+  --root-password password:Root@123
+
+sudo virt-install \
+  --name master02 \
+  --ram 131072 \
+  --vcpus 10 \
+  --disk path=/var/lib/libvirt/images/master02.qcow2 \
+  --os-variant debian12 \
+  --network bridge=k8s \
+  --graphics none \
+  --serial pty \
+  --console pty \
+  --boot hd \
+  --import
+
+sudo virt-builder debian-12  --format qcow2 \
+  --size 1000G -o /var/lib/libvirt/images/master03.qcow2 \
+  --root-password password:Root@123
+
+sudo virt-install \
+  --name master03 \
+  --ram 131072 \
+  --vcpus 10 \
+  --disk path=/var/lib/libvirt/images/master03.qcow2 \
+  --os-variant debian12 \
+  --network bridge=k8s \
+  --graphics none \
+  --serial pty \
+  --console pty \
+  --boot hd \
+  --import
+
+sudo virt-builder debian-12  --format qcow2 \
+  --size 1000G -o /var/lib/libvirt/images/worker01.qcow2 \
+  --root-password password:Root@123
+
+sudo virt-install \
+  --name worker01 \
+  --ram 131072 \
+  --vcpus 10 \
+  --disk path=/var/lib/libvirt/images/worker01.qcow2 \
+  --os-variant debian12 \
+  --network bridge=k8s \
+  --graphics none \
+  --serial pty \
+  --console pty \
+  --boot hd \
+  --import
+
+sudo virt-builder debian-12  --format qcow2 \
+  --size 1000G -o /var/lib/libvirt/images/worker02.qcow2 \
+  --root-password password:Root@123
+
+sudo virt-install \
+  --name worker02 \
+  --ram 131072 \
+  --vcpus 10 \
+  --disk path=/var/lib/libvirt/images/worker02.qcow2 \
+  --os-variant debian12 \
+  --network bridge=k8s \
+  --graphics none \
+  --serial pty \
+  --console pty \
+  --boot hd \
+  --import
+
+sudo virt-builder debian-12  --format qcow2 \
+  --size 1000G -o /var/lib/libvirt/images/worker03.qcow2 \
+  --root-password password:Root@123
+
+sudo virt-install \
+  --name worker03 \
+  --ram 131072 \
+  --vcpus 10 \
+  --disk path=/var/lib/libvirt/images/worker03.qcow2 \
+  --os-variant debian12 \
+  --network bridge=k8s \
   --graphics none \
   --serial pty \
   --console pty \
@@ -99,32 +201,15 @@ sudo virt-install \
 
 Configuring the network
 ```
-nmcli con add type ethernet con-name enp1s0 ifname enp1s0 \
-  connection.autoconnect yes ipv4.method manual \
-  ipv4.address 192.168.100.254/24 ipv4.gateway 192.168.100.1 \
-  ipv4.dns 8.8.8.8
-
-virsh net-list --all
-virsh net-start default
-virsh net-autostart default
-
 ip link show
 ip link
 ifconfig -a
-sudo ip link set <interface> up
+sudo ip link set enp1s0 up
 sudo ip addr add 192.168.122.10/24 dev enp1s0
 sudo ip route add default via 192.168.122.1
-echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+echo "nameserver 8.8.8.8" | tee /etc/resolv.conf
 ping 8.8.8.8
 ping google.com
-
-nmcli con add type ethernet con-name enp1s0 ifname enp1s0 \
-  connection.autoconnect yes ipv4.method manual \
-  ipv4.address 192.168.100.254/24 ipv4.gateway 192.168.100.1 \
-  ipv4.dns 8.8.8.8
-
-ping -c 2 8.8.8.8
-ping -c 2 google.com
 ```
 
 ### Let's setup a HA Kubernetes cluster with 3 masters and 3 worker nodes using Kubespray
