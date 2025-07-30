@@ -46,12 +46,12 @@ Vagrant.configure("2") do |config|
   config.vm.box = "generic/ubuntu2204"
 
   # Use password instead of SSH key for authentication
-  config.ssh.password = "vagrantpassword"
+  config.ssh.password = "root"
   config.ssh.insert_key = false
 
   # Provision all VMs: set vagrant and root user password, enable password auth
   config.vm.provision "shell", privileged: true, inline: <<-SHELL
-    echo 'vagrant:vagrant' | chpasswd
+    echo 'vagrant:root' | chpasswd
     echo 'root:root' | chpasswd
     sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
     sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
