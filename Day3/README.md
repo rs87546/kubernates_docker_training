@@ -109,6 +109,10 @@ sudo su -
 cd /root/kubernetes
 git clone https://github.com/kubernetes-sigs/kubespray.git
 cd kuberspray
+cp -r inventory/sample inventory/mycluster
+# We need to modify inventory/mycluster/inventory.ini, inventory/mycluster/group_vars/all.yml and inventory/mycluster/group_vars/k8s_cluster.yml
 
+ansible-playbook -i inventory/mycluster/ cluster.yml -b -v \
+  --private-key=~/.ssh/private_key
 ```
 
