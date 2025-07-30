@@ -31,84 +31,7 @@ sudo systemctl status libvirtd
 
 #### Create virtual machines
 
-Let's create a folder
-```
-sudo su -
-mkdir -p /root/kubernetes
-cd /root/kubernetes
-touch Vagrantfile
-```
-
-Create a Vagrantfile at /root/kubernetes folder
-<pre>
-Vagrant.configure("2") do |config|
-  config.vm.box = "generic/ubuntu2204"
-
-  # Use root for SSH, set password authentication
-  config.ssh.username = "root"
-  config.ssh.password = "rootpassword"
-  config.ssh.insert_key = false
-
-  # Provision all VMs: set root password, enable password auth, enable root login
-  config.vm.provision "shell", privileged: true, inline: <<-SHELL
-    echo 'root:rootpassword' | chpasswd
-    sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-    sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-    sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-    sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
-    systemctl restart sshd
-  SHELL
-
-  # HAProxy Load Balancer
-  config.vm.define "haproxy" do |haproxy|
-    haproxy.vm.hostname = "haproxy.k8s.rps.com"
-    haproxy.vm.network "private_network", ip: "192.168.56.10"
-    haproxy.vm.provider "virtualbox" do |vb|
-      vb.memory = 2048
-      vb.cpus = 2
-    end
-    haproxy.vm.provider "libvirt" do |lv|
-      lv.memory = 2048
-      lv.cpus = 2
-    end
-  end
-
-  # Master Nodes
-  (1..3).each do |i|
-    config.vm.define "master0#{i}" do |master|
-      master.vm.hostname = "master0#{i}.k8s.rps.com"
-      master.vm.network "private_network", ip: "192.168.56.1#{i}"
-      master.vm.provider "virtualbox" do |vb|
-        vb.memory = 2048
-        vb.cpus = 2
-      end
-      master.vm.provider "libvirt" do |lv|
-        lv.memory = 2048
-        lv.cpus = 2
-      end
-    end
-  end
-
-  # Worker Nodes
-  (1..3).each do |i|
-    config.vm.define "worker0#{i}" do |worker|
-      worker.vm.hostname = "worker0#{i}.k8s.rps.com"
-      worker.vm.network "private_network", ip: "192.168.56.2#{i}"
-      worker.vm.provider "virtualbox" do |vb|
-        vb.memory = 2048
-        vb.cpus = 2
-      end
-      worker.vm.provider "libvirt" do |lv|
-        lv.memory = 2048
-        lv.cpus = 2
-      end
-    end
-  end
-end
-</pre>
-
-Create a file virt-net.xml
-
+Let's create a custom network for Kubernetes
 ```
 <network>
   <name>k8s</name>
@@ -123,12 +46,31 @@ Create a file virt-net.xml
   </ip>
 </network>  
 ```
+Using the above file, let's create the custom k8s network
+```
 ```
 sudo virsh net-define --file virt-net.xml
 sudo virsh net-autostart k8s
 sudo virsh net-start k8s
 sudo virsh net-list
 ```
+
+```
+
+Let's create a folder
+```
+sudo su -
+mkdir -p /root/kubernetes
+cd /root/kubernetes
+touch create-master1-vm.sh
+touch create-master2-vm.sh
+touch create-master3-vm.sh
+touch create-worker1-vm.sh
+touch create-worker2-vm.sh
+touch create-worker3-vm.sh
+touch create-haproxy-vm.sh
+```
+
 
 Let's create the Virtual machines
 ```
