@@ -45,66 +45,35 @@ Create a Vagrantfile at /root/kubernetes folder
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/ubuntu-22.04"
 
-  # ================================================================
-  # SSH KEY CONFIGURATION: Use a single custom key for all VMs
-  # ================================================================
-  
-  # Specify the path to your custom private key on the host machine.
-  # This path is relative to the Vagrantfile. A good practice is to
-  # put the keys in a .vagrant_keys directory within your project.
-  # Make sure to run `ssh-keygen` to create these keys first.
-  # Example command: ssh-keygen -t rsa -f ./_keys/vagrant_key
-  config.ssh.private_key_path = File.expand_path("_keys/vagrant_key")
-
-  # Disable Vagrant's default key injection
+  # Use your custom private key for SSH
+  config.ssh.private_key_path = File.expand_path("_keys/id_rsa")
   config.ssh.insert_key = false
 
-  # ================================================================
-  # GLOBAL PROVISIONERS: Applied to all VMs
-  # ================================================================
+  # Provision all VMs: authorize vagrant and root users with your public key
+  config.vm.provision "shell", privileged: true, inline: <<-SHELL
+    PUB_KEY=$(cat /vagrant/_keys/id_rsa.pub)
 
-  # Provisioner 1: Inject the custom public key into the 'vagrant' user
-  # This replaces Vagrant's default key.
-  config.vm.provision "shell", inline: <<-SHELL_INJECT_KEY
-    # The Vagrantfile reads the public key from the host and passes it to the VM.
-    PUBLIC_KEY=$(cat /vagrant/_keys/vagrant_key.pub)
-    
-    # Ensure the .ssh directory exists with correct permissions
+    # Vagrant user
     mkdir -p /home/vagrant/.ssh
-    chmod 700 /home/vagrant/.ssh
-    
-    # Write the public key to authorized_keys
-    echo "$PUBLIC_KEY" > /home/vagrant/.ssh/authorized_keys
-    chmod 600 /home/vagrant/.ssh/authorized_keys
+    echo "$PUB_KEY" > /home/vagrant/.ssh/authorized_keys
     chown vagrant:vagrant /home/vagrant/.ssh/authorized_keys
-  SHELL_INJECT_KEY
+    chmod 600 /home/vagrant/.ssh/authorized_keys
 
-  # Provisioner 2: Enable root login and copy the custom key to root
-  config.vm.provision "shell", inline: <<-SHELL_ROOT_SETUP
-    # Ensure root's .ssh directory exists
+    # Root user
     mkdir -p /root/.ssh
-    chmod 700 /root/.ssh
-    
-    # Enable PermitRootLogin in sshd_config.
-    sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-    
-    # Copy the custom key from the vagrant user to the root user
-    cp /home/vagrant/.ssh/authorized_keys /root/.ssh/authorized_keys
+    echo "$PUB_KEY" > /root/.ssh/authorized_keys
     chmod 600 /root/.ssh/authorized_keys
-    
-    # Restart the SSH service to apply changes.
-    systemctl restart sshd
-  SHELL_ROOT_SETUP
 
-  # ================================================================
-  # VM DEFINITIONS
-  # ================================================================
+    # Enable root SSH login
+    sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+    sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+    systemctl restart sshd
+  SHELL
 
   # HAProxy Load Balancer
   config.vm.define "haproxy" do |haproxy|
     haproxy.vm.hostname = "haproxy.k8s.rps.com"
     haproxy.vm.network "private_network", ip: "192.168.56.10"
-  
     haproxy.vm.provider "virtualbox" do |vb|
       vb.memory = 2048
       vb.cpus = 2
@@ -115,12 +84,11 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  # Define Master Nodes
+  # Master Nodes
   (1..3).each do |i|
     config.vm.define "master0#{i}" do |master|
       master.vm.hostname = "master0#{i}.k8s.rps.com"
       master.vm.network "private_network", ip: "192.168.56.1#{i}"
-          
       master.vm.provider "virtualbox" do |vb|
         vb.memory = 131072
         vb.cpus = 10
@@ -132,12 +100,11 @@ Vagrant.configure("2") do |config|
     end
   end
 
-  # Define Worker Nodes
+  # Worker Nodes
   (1..3).each do |i|
     config.vm.define "worker0#{i}" do |worker|
       worker.vm.hostname = "worker0#{i}.k8s.rps.com"
       worker.vm.network "private_network", ip: "192.168.56.2#{i}"
-      
       worker.vm.provider "virtualbox" do |vb|
         vb.memory = 131072
         vb.cpus = 10
