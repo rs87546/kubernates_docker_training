@@ -377,9 +377,560 @@ image-endpoint: unix:///run/containerd/containerd.sock
 timeout: 10
 debug: false
 ```
+Restart services
+```
+sudo systemctl restart containerd
+sudo systemctl restart kubelet
+sudo systemctl restart kubelet
+```
+
+#### Configure Master02 Virtual Machine
+From the Ubuntu Server, login to Master02 VM
+```
+ssh root@192.168.100.12
+```
+
+Login Credentials are
+<pre>
+username - root
+password - Root@123
+</pre>
+
+Once you have logged to Master02 Virtual Machine, configure the network and assign static IP to the VM
+```
+hostnamectl set-hostname master02.k8s.rps.com
+
+ip link
+sudo ip link set enp1s0 up
+sudo ip addr add 192.168.100.12/24 dev enp1s0
+sudo ip route add default via 192.168.100.1
+echo "nameserver 8.8.8.8" | tee /etc/resolv.conf
+ping 8.8.8.8
+ping google.com
+apt install sudo net-tools iputils-ping vim tree -y
+export TERM=linux
+```
+
+Let's edit /etc/hosts append the below at the end of the file without deleting any existing entries
+```
+192.168.100.10 haproxy.k8s.rps.com
+192.168.100.11 master01.k8s.rps.com
+192.168.100.12 master02.k8s.rps.com
+192.168.100.13 master03.k8s.rps.com
+192.168.100.13 worker01.k8s.rps.com
+192.168.100.13 worker02.k8s.rps.com
+192.168.100.13 worker03.k8s.rps.com
+```
+
+Install the below tools
+```
+apt install -y sudo
+
+# Disable swap
+swapoff -a
+sed -i '/ swap / s/^/#/' /etc/fstab
+
+# Install dependencies
+sudo apt update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo apt install -y containerd
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+sudo systemctl restart containerd
+
+apt-get install -y apt-transport-https curl ca-certificates gnupg  gpg lsb-release containerd
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+
+sudo apt update
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+sudo systemctl restart containerd
+
+containerd config dump | grep SystemdCgroup
+
+# Containerd config
+mkdir -p /etc/containerd
+containerd config default > /etc/containerd/config.toml
+systemctl restart containerd
+systemctl enable containerd
+
+# Enable kernel modules and sysctl settings
+modprobe overlay
+modprobe br_netfilter
+
+tee /etc/modules-load.d/k8s.conf <<EOF
+overlay
+br_netfilter
+EOF
+
+tee /etc/sysctl.d/k8s.conf <<EOF
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables  = 1
+net.ipv4.ip_forward = 1
+EOF
+
+sysctl --system
+```
+
+Edit sudo vim /etc/crictl.yaml
+```
+runtime-endpoint: unix:///run/containerd/containerd.sock
+image-endpoint: unix:///run/containerd/containerd.sock
+timeout: 10
+debug: false
+```
 
 Restart services
 ```
 sudo systemctl restart containerd
 sudo systemctl restart kubelet
+sudo systemctl restart kubelet
 ```
+
+#### Configure Master03 Virtual Machine
+From the Ubuntu Server, login to Master03 VM
+```
+ssh root@192.168.100.13
+```
+
+Login Credentials are
+<pre>
+username - root
+password - Root@123
+</pre>
+
+Once you have logged to Master03 Virtual Machine, configure the network and assign static IP to the VM
+```
+hostnamectl set-hostname master03.k8s.rps.com
+
+ip link
+sudo ip link set enp1s0 up
+sudo ip addr add 192.168.100.13/24 dev enp1s0
+sudo ip route add default via 192.168.100.1
+echo "nameserver 8.8.8.8" | tee /etc/resolv.conf
+ping 8.8.8.8
+ping google.com
+apt install sudo net-tools iputils-ping vim tree -y
+export TERM=linux
+```
+
+Let's edit /etc/hosts append the below at the end of the file without deleting any existing entries
+```
+192.168.100.10 haproxy.k8s.rps.com
+192.168.100.11 master01.k8s.rps.com
+192.168.100.12 master02.k8s.rps.com
+192.168.100.13 master03.k8s.rps.com
+192.168.100.13 worker01.k8s.rps.com
+192.168.100.13 worker02.k8s.rps.com
+192.168.100.13 worker03.k8s.rps.com
+```
+
+Install the below tools
+```
+apt install -y sudo
+
+# Disable swap
+swapoff -a
+sed -i '/ swap / s/^/#/' /etc/fstab
+
+# Install dependencies
+sudo apt update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo apt install -y containerd
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+sudo systemctl restart containerd
+
+apt-get install -y apt-transport-https curl ca-certificates gnupg  gpg lsb-release containerd
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+
+sudo apt update
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+sudo systemctl restart containerd
+
+containerd config dump | grep SystemdCgroup
+
+# Containerd config
+mkdir -p /etc/containerd
+containerd config default > /etc/containerd/config.toml
+systemctl restart containerd
+systemctl enable containerd
+
+# Enable kernel modules and sysctl settings
+modprobe overlay
+modprobe br_netfilter
+
+tee /etc/modules-load.d/k8s.conf <<EOF
+overlay
+br_netfilter
+EOF
+
+tee /etc/sysctl.d/k8s.conf <<EOF
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables  = 1
+net.ipv4.ip_forward = 1
+EOF
+
+sysctl --system
+```
+
+Edit sudo vim /etc/crictl.yaml
+```
+runtime-endpoint: unix:///run/containerd/containerd.sock
+image-endpoint: unix:///run/containerd/containerd.sock
+timeout: 10
+debug: false
+```
+
+Restart services
+```
+sudo systemctl restart containerd
+sudo systemctl restart kubelet
+sudo systemctl restart kubelet
+```
+
+#### Configure Worker01 Virtual Machine
+From the Ubuntu Server, login to Worker01 VM
+```
+ssh root@192.168.100.14
+```
+
+Login Credentials are
+<pre>
+username - root
+password - Root@123
+</pre>
+
+Once you have logged to Worker01 Virtual Machine, configure the network and assign static IP to the VM
+```
+hostnamectl set-hostname worker01.k8s.rps.com
+
+ip link
+sudo ip link set enp1s0 up
+sudo ip addr add 192.168.100.14/24 dev enp1s0
+sudo ip route add default via 192.168.100.1
+echo "nameserver 8.8.8.8" | tee /etc/resolv.conf
+ping 8.8.8.8
+ping google.com
+apt install sudo net-tools iputils-ping vim tree -y
+export TERM=linux
+```
+
+Let's edit /etc/hosts append the below at the end of the file without deleting any existing entries
+```
+192.168.100.10 haproxy.k8s.rps.com
+192.168.100.11 master01.k8s.rps.com
+192.168.100.12 master02.k8s.rps.com
+192.168.100.13 master03.k8s.rps.com
+192.168.100.13 worker01.k8s.rps.com
+192.168.100.13 worker02.k8s.rps.com
+192.168.100.13 worker03.k8s.rps.com
+```
+
+Install the below tools
+```
+apt install -y sudo
+
+# Disable swap
+swapoff -a
+sed -i '/ swap / s/^/#/' /etc/fstab
+
+# Install dependencies
+sudo apt update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo apt install -y containerd
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+sudo systemctl restart containerd
+
+apt-get install -y apt-transport-https curl ca-certificates gnupg  gpg lsb-release containerd
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+
+sudo apt update
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+sudo systemctl restart containerd
+
+containerd config dump | grep SystemdCgroup
+
+# Containerd config
+mkdir -p /etc/containerd
+containerd config default > /etc/containerd/config.toml
+systemctl restart containerd
+systemctl enable containerd
+
+# Enable kernel modules and sysctl settings
+modprobe overlay
+modprobe br_netfilter
+
+tee /etc/modules-load.d/k8s.conf <<EOF
+overlay
+br_netfilter
+EOF
+
+tee /etc/sysctl.d/k8s.conf <<EOF
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables  = 1
+net.ipv4.ip_forward = 1
+EOF
+
+sysctl --system
+```
+
+Edit sudo vim /etc/crictl.yaml
+```
+runtime-endpoint: unix:///run/containerd/containerd.sock
+image-endpoint: unix:///run/containerd/containerd.sock
+timeout: 10
+debug: false
+```
+
+Restart services
+```
+sudo systemctl restart containerd
+sudo systemctl restart kubelet
+sudo systemctl restart kubelet
+```
+
+#### Configure Worker02 Virtual Machine
+From the Ubuntu Server, login to Worker02 VM
+```
+ssh root@192.168.100.15
+```
+
+Login Credentials are
+<pre>
+username - root
+password - Root@123
+</pre>
+
+Once you have logged to Worker02 Virtual Machine, configure the network and assign static IP to the VM
+```
+hostnamectl set-hostname worker02.k8s.rps.com
+
+ip link
+sudo ip link set enp1s0 up
+sudo ip addr add 192.168.100.15/24 dev enp1s0
+sudo ip route add default via 192.168.100.1
+echo "nameserver 8.8.8.8" | tee /etc/resolv.conf
+ping 8.8.8.8
+ping google.com
+apt install sudo net-tools iputils-ping vim tree -y
+export TERM=linux
+```
+
+Let's edit /etc/hosts append the below at the end of the file without deleting any existing entries
+```
+192.168.100.10 haproxy.k8s.rps.com
+192.168.100.11 master01.k8s.rps.com
+192.168.100.12 master02.k8s.rps.com
+192.168.100.13 master03.k8s.rps.com
+192.168.100.13 worker01.k8s.rps.com
+192.168.100.13 worker02.k8s.rps.com
+192.168.100.13 worker03.k8s.rps.com
+```
+
+Install the below tools
+```
+apt install -y sudo
+
+# Disable swap
+swapoff -a
+sed -i '/ swap / s/^/#/' /etc/fstab
+
+# Install dependencies
+sudo apt update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo apt install -y containerd
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+sudo systemctl restart containerd
+
+apt-get install -y apt-transport-https curl ca-certificates gnupg  gpg lsb-release containerd
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+
+sudo apt update
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+sudo systemctl restart containerd
+
+containerd config dump | grep SystemdCgroup
+
+# Containerd config
+mkdir -p /etc/containerd
+containerd config default > /etc/containerd/config.toml
+systemctl restart containerd
+systemctl enable containerd
+
+# Enable kernel modules and sysctl settings
+modprobe overlay
+modprobe br_netfilter
+
+tee /etc/modules-load.d/k8s.conf <<EOF
+overlay
+br_netfilter
+EOF
+
+tee /etc/sysctl.d/k8s.conf <<EOF
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables  = 1
+net.ipv4.ip_forward = 1
+EOF
+
+sysctl --system
+```
+
+Edit sudo vim /etc/crictl.yaml
+```
+runtime-endpoint: unix:///run/containerd/containerd.sock
+image-endpoint: unix:///run/containerd/containerd.sock
+timeout: 10
+debug: false
+```
+
+Restart services
+```
+sudo systemctl restart containerd
+sudo systemctl restart kubelet
+sudo systemctl restart kubelet
+```
+
+#### Configure Worker03 Virtual Machine
+From the Ubuntu Server, login to Worker03 VM
+```
+ssh root@192.168.100.16
+```
+
+Login Credentials are
+<pre>
+username - root
+password - Root@123
+</pre>
+
+Once you have logged to Worker03 Virtual Machine, configure the network and assign static IP to the VM
+```
+hostnamectl set-hostname worker03.k8s.rps.com
+
+ip link
+sudo ip link set enp1s0 up
+sudo ip addr add 192.168.100.16/24 dev enp1s0
+sudo ip route add default via 192.168.100.1
+echo "nameserver 8.8.8.8" | tee /etc/resolv.conf
+ping 8.8.8.8
+ping google.com
+apt install sudo net-tools iputils-ping vim tree -y
+export TERM=linux
+```
+
+Let's edit /etc/hosts append the below at the end of the file without deleting any existing entries
+```
+192.168.100.10 haproxy.k8s.rps.com
+192.168.100.11 master01.k8s.rps.com
+192.168.100.12 master02.k8s.rps.com
+192.168.100.13 master03.k8s.rps.com
+192.168.100.13 worker01.k8s.rps.com
+192.168.100.13 worker02.k8s.rps.com
+192.168.100.13 worker03.k8s.rps.com
+```
+
+Install the below tools
+```
+apt install -y sudo
+
+# Disable swap
+swapoff -a
+sed -i '/ swap / s/^/#/' /etc/fstab
+
+# Install dependencies
+sudo apt update
+sudo apt-get install -y apt-transport-https ca-certificates curl
+sudo apt install -y containerd
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+sudo systemctl restart containerd
+
+apt-get install -y apt-transport-https curl ca-certificates gnupg  gpg lsb-release containerd
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.32/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+
+echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.32/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+
+sudo apt update
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+sudo systemctl restart containerd
+
+containerd config dump | grep SystemdCgroup
+
+# Containerd config
+mkdir -p /etc/containerd
+containerd config default > /etc/containerd/config.toml
+systemctl restart containerd
+systemctl enable containerd
+
+# Enable kernel modules and sysctl settings
+modprobe overlay
+modprobe br_netfilter
+
+tee /etc/modules-load.d/k8s.conf <<EOF
+overlay
+br_netfilter
+EOF
+
+tee /etc/sysctl.d/k8s.conf <<EOF
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables  = 1
+net.ipv4.ip_forward = 1
+EOF
+
+sysctl --system
+```
+
+Edit sudo vim /etc/crictl.yaml
+```
+runtime-endpoint: unix:///run/containerd/containerd.sock
+image-endpoint: unix:///run/containerd/containerd.sock
+timeout: 10
+debug: false
+```
+
+Restart services
+```
+sudo systemctl restart containerd
+sudo systemctl restart kubelet
+sudo systemctl restart kubelet
+```
+
