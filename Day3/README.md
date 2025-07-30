@@ -48,13 +48,10 @@ Let's create a custom network for Kubernetes
 ```
 Using the above file, let's create the custom k8s network
 ```
-```
 sudo virsh net-define --file virt-net.xml
 sudo virsh net-autostart k8s
 sudo virsh net-start k8s
 sudo virsh net-list
-```
-
 ```
 
 Let's create a folder
