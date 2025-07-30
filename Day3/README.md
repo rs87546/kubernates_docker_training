@@ -51,3 +51,18 @@ haproxy
 kube_control_plane
 kube_node
 </pre>
+
+Edit vim inventory/mycluster/group_vars/k8s-cluster/k8s-cluster.yml
+```
+# A stable, highly available endpoint for the API server.
+apiserver_loadbalancer_domain_name: "k8s.rps.com"
+
+# The IP addresses of all your master nodes for the load balancer to route to.
+kube_master_ips:
+  - 192.168.56.10
+  - 192.168.56.11
+  - 192.168.56.12
+
+# The port of the API server
+apiserver_loadbalancer_apiserver_port: 6443
+```
