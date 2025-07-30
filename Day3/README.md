@@ -51,12 +51,12 @@ Vagrant.configure("2") do |config|
     haproxy.vm.network "private_network", ip: "192.168.56.10"
   
     haproxy.vm.provision "shell", inline: <<-SHELL
-    # Enable root login
-    sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-    # Restart SSH service
-    systemctl restart sshd
+      # Enable root login
+      sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+      # Restart SSH service
+      systemctl restart sshd
+    SHELL
       
-  SHELL
     haproxy.vm.provider "virtualbox" do |vb|
       vb.memory = 2048
       vb.cpus = 2
@@ -74,10 +74,11 @@ Vagrant.configure("2") do |config|
       master.vm.network "private_network", ip: "192.168.56.1#{i}"
       
       master.vm.provision "shell", inline: <<-SHELL
-      # Enable root login
-      sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-      # Restart SSH service
-      systemctl restart sshd
+        # Enable root login
+        sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+        # Restart SSH service
+        systemctl restart sshd
+      SHELL
 
       master.vm.provider "virtualbox" do |vb|
         vb.memory = 131072
@@ -97,11 +98,12 @@ Vagrant.configure("2") do |config|
       worker.vm.network "private_network", ip: "192.168.56.2#{i}"
 
       worker.vm.provision "shell", inline: <<-SHELL
-      # Enable root login
-      sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-      # Restart SSH service
-      systemctl restart sshd
-
+        # Enable root login
+        sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+        # Restart SSH service
+        systemctl restart sshd
+      SHELL
+        
       worker.vm.provider "virtualbox" do |vb|
         vb.memory = 131072
         vb.cpus = 10
