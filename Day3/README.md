@@ -46,37 +46,58 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/ubuntu-22.04"
 
   # ================================================================
+  # SSH KEY CONFIGURATION: Use a single custom key for all VMs
+  # ================================================================
+  
+  # Specify the path to your custom private key on the host machine.
+  # This path is relative to the Vagrantfile. A good practice is to
+  # put the keys in a .vagrant_keys directory within your project.
+  # Make sure to run `ssh-keygen` to create these keys first.
+  # Example command: ssh-keygen -t rsa -f ./_keys/vagrant_key
+  config.ssh.private_key_path = File.expand_path("_keys/vagrant_key")
+
+  # Disable Vagrant's default key injection
+  config.ssh.insert_key = false
+
+  # ================================================================
   # GLOBAL PROVISIONERS: Applied to all VMs
-  # These shell scripts configure root SSH access with the
-  # Vagrant-generated key.
   # ================================================================
 
-  # Provisioner 1: Enable root login in the SSH daemon configuration
-  config.vm.provision "shell", inline: <<-SHELL_ROOT_LOGIN
-    # Ensure root's home directory has an .ssh directory
+  # Provisioner 1: Inject the custom public key into the 'vagrant' user
+  # This replaces Vagrant's default key.
+  config.vm.provision "shell", inline: <<-SHELL_INJECT_KEY
+    # The Vagrantfile reads the public key from the host and passes it to the VM.
+    PUBLIC_KEY=$(cat /vagrant/_keys/vagrant_key.pub)
+    
+    # Ensure the .ssh directory exists with correct permissions
+    mkdir -p /home/vagrant/.ssh
+    chmod 700 /home/vagrant/.ssh
+    
+    # Write the public key to authorized_keys
+    echo "$PUBLIC_KEY" > /home/vagrant/.ssh/authorized_keys
+    chmod 600 /home/vagrant/.ssh/authorized_keys
+    chown vagrant:vagrant /home/vagrant/.ssh/authorized_keys
+  SHELL_INJECT_KEY
+
+  # Provisioner 2: Enable root login and copy the custom key to root
+  config.vm.provision "shell", inline: <<-SHELL_ROOT_SETUP
+    # Ensure root's .ssh directory exists
     mkdir -p /root/.ssh
     chmod 700 /root/.ssh
     
     # Enable PermitRootLogin in sshd_config.
     sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
     
+    # Copy the custom key from the vagrant user to the root user
+    cp /home/vagrant/.ssh/authorized_keys /root/.ssh/authorized_keys
+    chmod 600 /root/.ssh/authorized_keys
+    
     # Restart the SSH service to apply changes.
     systemctl restart sshd
-  SHELL_ROOT_LOGIN
-
-  # Provisioner 2: Copy the vagrant user's public key to the root user
-  config.vm.provision "shell", inline: <<-SHELL_ROOT_KEY
-    # Copy the authorized_keys file from the vagrant user to the root user.
-    cp /home/vagrant/.ssh/authorized_keys /root/.ssh/authorized_keys
-    
-    # Ensure correct permissions on the authorized_keys file for root.
-    chmod 600 /root/.ssh/authorized_keys
-  SHELL_ROOT_KEY
+  SHELL_ROOT_SETUP
 
   # ================================================================
   # VM DEFINITIONS
-  # The global provisioners above will be automatically run for
-  # each of the following VMs.
   # ================================================================
 
   # HAProxy Load Balancer
@@ -127,7 +148,7 @@ Vagrant.configure("2") do |config|
       end
     end
   end
-end  
+end
 </pre>
 
 
