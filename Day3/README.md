@@ -41,22 +41,21 @@ touch Vagrantfile
 
 Create a Vagrantfile at /root/kubernetes folder
 <pre>
-# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 Vagrant.configure("2") do |config|
   config.vm.box = "generic/ubuntu2204"
 
-  # Use password instead of SSH key for authentication
-  config.ssh.password = "root"
+  # Use root for SSH, set password authentication
+  config.ssh.username = "root"
+  config.ssh.password = "rootpassword"
   config.ssh.insert_key = false
 
-  # Provision all VMs: set vagrant and root user password, enable password auth
+  # Provision all VMs: set root password, enable password auth, enable root login
   config.vm.provision "shell", privileged: true, inline: <<-SHELL
-    echo 'vagrant:root' | chpasswd
-    echo 'root:root' | chpasswd
-    sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
-    sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
+    echo 'root:rootpassword' | chpasswd
     sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
     sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+    sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+    sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
     systemctl restart sshd
   SHELL
 
@@ -80,12 +79,12 @@ Vagrant.configure("2") do |config|
       master.vm.hostname = "master0#{i}.k8s.rps.com"
       master.vm.network "private_network", ip: "192.168.56.1#{i}"
       master.vm.provider "virtualbox" do |vb|
-        vb.memory = 131072
-        vb.cpus = 10
+        vb.memory = 2048
+        vb.cpus = 2
       end
       master.vm.provider "libvirt" do |lv|
-        lv.memory = 131072
-        lv.cpus = 10
+        lv.memory = 2048
+        lv.cpus = 2
       end
     end
   end
@@ -96,12 +95,12 @@ Vagrant.configure("2") do |config|
       worker.vm.hostname = "worker0#{i}.k8s.rps.com"
       worker.vm.network "private_network", ip: "192.168.56.2#{i}"
       worker.vm.provider "virtualbox" do |vb|
-        vb.memory = 131072
-        vb.cpus = 10
+        vb.memory = 2048
+        vb.cpus = 2
       end
       worker.vm.provider "libvirt" do |lv|
-        lv.memory = 131072
-        lv.cpus = 10
+        lv.memory = 2048
+        lv.cpus = 2
       end
     end
   end
