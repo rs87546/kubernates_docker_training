@@ -51,7 +51,7 @@ Vagrant.configure("2") do |config|
 
   # Provision all VMs: authorize vagrant and root users with your public key
   config.vm.provision "shell", privileged: true, inline: <<-SHELL
-    PUB_KEY=$(cat /vagrant/_keys/id_rsa.pub)
+    PUB_KEY=$(cat _keys/id_rsa.pub)
 
     # Vagrant user
     mkdir -p /home/vagrant/.ssh
