@@ -41,38 +41,49 @@ touch Vagrantfile
 
 Create a Vagrantfile at /root/kubernetes folder
 <pre>
-
+# Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/ubuntu-22.04"
+
+  # ================================================================
+  # GLOBAL PROVISIONERS: Applied to all VMs
+  # These shell scripts configure root SSH access with the
+  # Vagrant-generated key.
+  # ================================================================
+
+  # Provisioner 1: Enable root login in the SSH daemon configuration
+  config.vm.provision "shell", inline: <<-SHELL_ROOT_LOGIN
+    # Ensure root's home directory has an .ssh directory
+    mkdir -p /root/.ssh
+    chmod 700 /root/.ssh
+    
+    # Enable PermitRootLogin in sshd_config.
+    sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+    
+    # Restart the SSH service to apply changes.
+    systemctl restart sshd
+  SHELL_ROOT_LOGIN
+
+  # Provisioner 2: Copy the vagrant user's public key to the root user
+  config.vm.provision "shell", inline: <<-SHELL_ROOT_KEY
+    # Copy the authorized_keys file from the vagrant user to the root user.
+    cp /home/vagrant/.ssh/authorized_keys /root/.ssh/authorized_keys
+    
+    # Ensure correct permissions on the authorized_keys file for root.
+    chmod 600 /root/.ssh/authorized_keys
+  SHELL_ROOT_KEY
+
+  # ================================================================
+  # VM DEFINITIONS
+  # The global provisioners above will be automatically run for
+  # each of the following VMs.
+  # ================================================================
 
   # HAProxy Load Balancer
   config.vm.define "haproxy" do |haproxy|
     haproxy.vm.hostname = "haproxy.k8s.rps.com"
     haproxy.vm.network "private_network", ip: "192.168.56.10"
   
-    haproxy.vm.provision "shell", inline: <<-SHELL
-      # Ensure root's home directory has an .ssh directory
-      mkdir -p /root/.ssh
-      chmod 700 /root/.ssh
-      
-      # Enable PermitRootLogin in sshd_config.
-      # The sed command handles both commented and uncommented lines.
-      sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-      
-      # Restart the SSH service to apply changes.
-      systemctl restart sshd
-    SHELL
-  
-    # Then, copy the public key from the vagrant user to the root user.
-    # This provisioner also runs with sudo.
-    haproxy.vm.provision "shell", inline: <<-SHELL
-      # Copy the authorized_keys file from the vagrant user to the root user.
-      cp /home/vagrant/.ssh/authorized_keys /root/.ssh/authorized_keys
-      
-      # Ensure correct permissions on the authorized_keys file for root.
-      chmod 600 /root/.ssh/authorized_keys
-    SHELL
-      
     haproxy.vm.provider "virtualbox" do |vb|
       vb.memory = 2048
       vb.cpus = 2
@@ -89,29 +100,6 @@ Vagrant.configure("2") do |config|
       master.vm.hostname = "master0#{i}.k8s.rps.com"
       master.vm.network "private_network", ip: "192.168.56.1#{i}"
           
-      master.vm.provision "shell", inline: <<-SHELL
-        # Ensure root's home directory has an .ssh directory
-        mkdir -p /root/.ssh
-        chmod 700 /root/.ssh
-        
-        # Enable PermitRootLogin in sshd_config.
-        # The sed command handles both commented and uncommented lines.
-        sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-        
-        # Restart the SSH service to apply changes.
-        systemctl restart sshd
-      SHELL
-    
-      # Then, copy the public key from the vagrant user to the root user.
-      # This provisioner also runs with sudo.
-      master.vm.provision "shell", inline: <<-SHELL
-        # Copy the authorized_keys file from the vagrant user to the root user.
-        cp /home/vagrant/.ssh/authorized_keys /root/.ssh/authorized_keys
-        
-        # Ensure correct permissions on the authorized_keys file for root.
-        chmod 600 /root/.ssh/authorized_keys
-      SHELL
-        
       master.vm.provider "virtualbox" do |vb|
         vb.memory = 131072
         vb.cpus = 10
@@ -128,29 +116,7 @@ Vagrant.configure("2") do |config|
     config.vm.define "worker0#{i}" do |worker|
       worker.vm.hostname = "worker0#{i}.k8s.rps.com"
       worker.vm.network "private_network", ip: "192.168.56.2#{i}"
-
-      worker.vm.provision "shell", inline: <<-SHELL
-        # Ensure root's home directory has an .ssh directory
-        mkdir -p /root/.ssh
-        chmod 700 /root/.ssh
-        
-        # Enable PermitRootLogin in sshd_config.
-        # The sed command handles both commented and uncommented lines.
-        sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
-        
-        # Restart the SSH service to apply changes.
-        systemctl restart sshd
-      SHELL
-    
-      # Then, copy the public key from the vagrant user to the root user.
-      # This provisioner also runs with sudo.
-      worker.vm.provision "shell", inline: <<-SHELL
-        # Copy the authorized_keys file from the vagrant user to the root user.
-        cp /home/vagrant/.ssh/authorized_keys /root/.ssh/authorized_keys
-        
-        # Ensure correct permissions on the authorized_keys file for root.
-        chmod 600 /root/.ssh/authorized_keys
-      SHELL        
+      
       worker.vm.provider "virtualbox" do |vb|
         vb.memory = 131072
         vb.cpus = 10
