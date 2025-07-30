@@ -29,8 +29,7 @@ sudo systemctl enable --now libvirtd
 sudo systemctl status libvirtd
 ```
 
-#### Create virtual machines
-
+#### Create Custom Network for Kubernetes
 Let's create a custom network for Kubernetes using file virt-net.xml
 ```
 <network>
@@ -54,39 +53,16 @@ sudo virsh net-start k8s
 sudo virsh net-list
 ```
 
-Let's create a folder
+#### Let's create the HAProxy Virtual Machine
 ```
-sudo su -
-mkdir -p /root/kubernetes
-cd /root/kubernetes
-touch create-master1-vm.sh
-touch create-master2-vm.sh
-touch create-master3-vm.sh
-touch create-worker1-vm.sh
-touch create-worker2-vm.sh
-touch create-worker3-vm.sh
-touch create-haproxy-vm.sh
-```
-
-
-Let's create the Virtual machines
-```
-sudo su -
-cd /root/kubernetes
-vagrant up
-```
-
-```
-sudo virt-builder -l
-
 sudo virt-builder debian-12  --format qcow2 \
   --size 1000G -o /var/lib/libvirt/images/haproxy.qcow2 \
   --root-password password:Root@123
 
 sudo virt-install \
   --name haproxy \
-  --ram 131072 \
-  --vcpus 10 \
+  --ram 4096 \
+  --vcpus 4 \
   --disk path=/var/lib/libvirt/images/haproxy.qcow2 \
   --os-variant debian12 \
   --network bridge=k8s \
@@ -95,7 +71,10 @@ sudo virt-install \
   --console pty \
   --boot hd \
   --import
+```
 
+#### Let's create the Master1 Virtual Machine
+```
 sudo virt-builder debian-12  --format qcow2 \
   --size 1000G -o /var/lib/libvirt/images/master01.qcow2 \
   --root-password password:Root@123
@@ -112,7 +91,10 @@ sudo virt-install \
   --console pty \
   --boot hd \
   --import
+```
 
+#### Let's create the Master2 Virtual Machine
+```
 sudo virt-builder debian-12  --format qcow2 \
   --size 1000G -o /var/lib/libvirt/images/master02.qcow2 \
   --root-password password:Root@123
@@ -129,7 +111,10 @@ sudo virt-install \
   --console pty \
   --boot hd \
   --import
+```
 
+#### Let's create the Master3 Virtual Machine
+```
 sudo virt-builder debian-12  --format qcow2 \
   --size 1000G -o /var/lib/libvirt/images/master03.qcow2 \
   --root-password password:Root@123
@@ -146,7 +131,10 @@ sudo virt-install \
   --console pty \
   --boot hd \
   --import
+```
 
+#### Let's create the Worker1 Virtual Machine
+```
 sudo virt-builder debian-12  --format qcow2 \
   --size 1000G -o /var/lib/libvirt/images/worker01.qcow2 \
   --root-password password:Root@123
@@ -163,7 +151,10 @@ sudo virt-install \
   --console pty \
   --boot hd \
   --import
+```
 
+#### Let's create the Worker2 Virtual Machine
+```
 sudo virt-builder debian-12  --format qcow2 \
   --size 1000G -o /var/lib/libvirt/images/worker02.qcow2 \
   --root-password password:Root@123
@@ -180,7 +171,10 @@ sudo virt-install \
   --console pty \
   --boot hd \
   --import
+```
 
+#### Let's create the Worker3 Virtual Machine
+```
 sudo virt-builder debian-12  --format qcow2 \
   --size 1000G -o /var/lib/libvirt/images/worker03.qcow2 \
   --root-password password:Root@123
@@ -199,36 +193,78 @@ sudo virt-install \
   --import
 ```
 
-Configuring the network
+#### Configure HAProxy Virtual Machine
+From the Ubuntu Server, login to HAProxy VM
 ```
-ip link show
+ssh root@192.168.100.10
+```
+
+Login Credentials are
+<pre>
+username - root
+password - Root@123
+</pre>
+
+Once you have logged to HAProxy Virtual Machine, configure the network and assign static IP to the VM
+```
 ip link
-ifconfig -a
 sudo ip link set enp1s0 up
 sudo ip addr add 192.168.100.10/24 dev enp1s0
 sudo ip route add default via 192.168.100.1
 echo "nameserver 8.8.8.8" | tee /etc/resolv.conf
 ping 8.8.8.8
 ping google.com
+apt install sudo net-tools iputils-ping vim tree haproxy -y
+export TERM=linux
 ```
 
-### Let's setup a HA Kubernetes cluster with 3 masters and 3 worker nodes using Kubespray
-
-Let's clone the kubespray project
+Let's edit /etc/hosts append the below at the end of the file without deleting any existing entries
 ```
-sudo su -
-cd /root/kubernetes
-git clone https://github.com/kubernetes-sigs/kubespray.git
-cd kuberspray
-cp -r inventory/sample inventory/mycluster
-# We need to modify inventory/mycluster/inventory.ini, inventory/mycluster/group_vars/all.yml and inventory/mycluster/group_vars/k8s_cluster.yml
-
-# we need to generate, key pair ( accept all defaults )
-ssh-keygen
-
-ansible-playbook -i inventory/mycluster/ cluster.yml -b -v \
-  --private-key=~/.ssh/id_ed25519
+192.168.100.10 haproxy.k8s.rps.com
+192.168.100.11 master01.k8s.rps.com
+192.168.100.12 master02.k8s.rps.com
+192.168.100.13 master03.k8s.rps.com
+192.168.100.13 worker01.k8s.rps.com
+192.168.100.13 worker02.k8s.rps.com
+192.168.100.13 worker03.k8s.rps.com
 ```
 
+Configure the HAProxy Load Balancer by editing /etc/haproxy/haproxy.cfg and replace with below content
+```
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    daemon
+    maxconn 2048
 
+defaults
+    log     global
+    mode    tcp
+    option  tcplog
+    timeout connect 10s
+    timeout client  1m
+    timeout server  1m
 
+# Frontend for Kubernetes API
+frontend k8s_api
+    bind *:6443
+    default_backend k8s_masters
+
+# Backend: Kubernetes Master Nodes
+backend k8s_masters
+    mode tcp
+    balance roundrobin
+    option tcp-check
+    default-server inter 5s fall 3 rise 2
+
+    server master01 192.168.100.11:6443 check
+    server master02 192.168.100.12:6443 check
+    server master03 192.168.100.13:6443 check
+```
+
+We need to restart the haproxy
+```
+systemctl enable haproxy
+systemctl start haproxy
+systemctl status haproxy
+```
