@@ -939,6 +939,23 @@ sudo systemctl restart kubelet
 Save the join tokens displayed by the below command in a a file without forgetting
 ```
 sudo kubeadm init --control-plane-endpoint "192.168.100.10:6443" --upload-certs --pod-network-cidr=10.244.0.0/16
+
+mkdir -p $HOME/.kube
+sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+kubectl get nodes
+
+# Wait for all the pods to settle down as initially it will keep crashing, once things settle down
+# Download the calico.yaml
+wget https://raw.githubusercontent.com/projectcalico/calico/v3.30.2/manifests/calico.yaml
+# Search and replace 192.168.0.0/16 with 10.244.0.0/16 in all the places
+kubectl apply -f calico.ymal
+
+## Check if all pods are running without any error
+kubectl get pods --all-namespaces
+
+Once all pods are stable, you can join the master nodes one by one, followed by worker nodes
 ```
 
 #### Joining Master02 VM
