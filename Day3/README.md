@@ -29,6 +29,60 @@ sudo systemctl enable --now libvirtd
 sudo systemctl status libvirtd
 ```
 
+#### Create virtual machines
+<pre>
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/ubuntu-22.04"
+
+  # HAProxy Load Balancer
+  config.vm.define "haproxy" do |haproxy|
+    haproxy.vm.hostname = "haproxy.k8s.rps.com"
+    haproxy.vm.network "private_network", ip: "192.168.56.10"
+    haproxy.vm.provider "virtualbox" do |vb|
+      vb.memory = 2048
+      vb.cpus = 2
+    end
+    haproxy.vm.provider "libvirt" do |lv|
+      lv.memory = 2048
+      lv.cpus = 2
+    end
+  end
+
+  # Define Master Nodes
+  (1..3).each do |i|
+    config.vm.define "master0#{i}" do |master|
+      master.vm.hostname = "master0#{i}.k8s.rps.com"
+      master.vm.network "private_network", ip: "192.168.56.1#{i}"
+      master.vm.provider "virtualbox" do |vb|
+        vb.memory = 131072
+        vb.cpus = 10
+      end
+      master.vm.provider "libvirt" do |lv|
+        lv.memory = 131072
+        lv.cpus = 10
+      end
+    end
+  end
+
+  # Define Worker Nodes
+  (1..3).each do |i|
+    config.vm.define "worker0#{i}" do |worker|
+      worker.vm.hostname = "worker0#{i}.k8s.rps.com"
+      worker.vm.network "private_network", ip: "192.168.56.2#{i}"
+      worker.vm.provider "virtualbox" do |vb|
+        vb.memory = 131072
+        vb.cpus = 10
+      end
+      worker.vm.provider "libvirt" do |lv|
+        lv.memory = 131072
+        lv.cpus = 10
+      end
+    end
+  end
+end  
+</pre>
+
 Let's clone the kubespray
 
 ```
