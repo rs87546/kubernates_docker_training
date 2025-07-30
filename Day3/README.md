@@ -143,6 +143,15 @@ virsh net-start default
 virsh net-autostart default
 
 ip link show
+ip link
+ifconfig -a
+sudo ip link set <interface> up
+sudo ip addr add 192.168.122.100/24 dev <interface>
+sudo ip route add default via 192.168.122.1
+echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
+ping 8.8.8.8
+ping google.com
+
 
 nmcli con add type ethernet con-name enp1s0 ifname enp1s0 \
   connection.autoconnect yes ipv4.method manual \
