@@ -205,8 +205,8 @@ ip link show
 ip link
 ifconfig -a
 sudo ip link set enp1s0 up
-sudo ip addr add 192.168.122.10/24 dev enp1s0
-sudo ip route add default via 192.168.122.1
+sudo ip addr add 192.168.100.10/24 dev enp1s0
+sudo ip route add default via 192.168.100.1
 echo "nameserver 8.8.8.8" | tee /etc/resolv.conf
 ping 8.8.8.8
 ping google.com
