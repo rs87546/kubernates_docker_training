@@ -30,6 +30,16 @@ sudo systemctl status libvirtd
 ```
 
 #### Create virtual machines
+
+Let's create a folder
+```
+sudo su -
+mkdir -p /root/kubernetes
+cd /root/kubernetes
+touch Vagrantfile
+```
+
+Create a Vagrantfile at /root/kubernetes folder
 <pre>
 
 Vagrant.configure("2") do |config|
@@ -82,3 +92,11 @@ Vagrant.configure("2") do |config|
   end
 end  
 </pre>
+
+
+Let's create the Virtual machines
+```
+sudo su -
+cd /root/kubernetes
+vagrant up
+```
