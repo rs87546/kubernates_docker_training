@@ -107,6 +107,28 @@ Vagrant.configure("2") do |config|
 end
 </pre>
 
+Create a file virt-net.xml
+
+```
+<network>
+  <name>k8s</name>
+  <forward mode='nat'>
+    <nat>
+      <port start='1024' end='65535'/>
+    </nat>
+  </forward>
+  <bridge name='k8s' stp='on' delay='0'/>
+  <domain name='k8s'/>
+  <ip address='192.168.100.1' netmask='255.255.255.0'>
+  </ip>
+</network>  
+```
+```
+sudo virsh net-define --file virt-net.xml
+sudo virsh net-autostart k8s
+sudo virsh net-start k8s
+sudo virsh net-list
+```
 
 Let's create the Virtual machines
 ```
@@ -138,6 +160,11 @@ sudo virt-install \
 
 Configuring the network
 ```
+nmcli con add type ethernet con-name enp1s0 ifname enp1s0 \
+  connection.autoconnect yes ipv4.method manual \
+  ipv4.address 192.168.100.254/24 ipv4.gateway 192.168.100.1 \
+  ipv4.dns 8.8.8.8
+
 virsh net-list --all
 virsh net-start default
 virsh net-autostart default
@@ -146,12 +173,11 @@ ip link show
 ip link
 ifconfig -a
 sudo ip link set <interface> up
-sudo ip addr add 192.168.122.100/24 dev <interface>
+sudo ip addr add 192.168.122.10/24 dev enp1s0
 sudo ip route add default via 192.168.122.1
 echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf
 ping 8.8.8.8
 ping google.com
-
 
 nmcli con add type ethernet con-name enp1s0 ifname enp1s0 \
   connection.autoconnect yes ipv4.method manual \
