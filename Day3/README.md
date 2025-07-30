@@ -43,7 +43,7 @@ Create a Vagrantfile at /root/kubernetes folder
 <pre>
 # Vagrantfile API/syntax version. Don't touch unless you know what you're doing!
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu/ubuntu-22.04"
+  config.vm.box = "generic/ubuntu2204"
 
   # Use your custom private key for SSH
   config.ssh.private_key_path = File.expand_path("_keys/id_rsa")
