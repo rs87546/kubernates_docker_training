@@ -45,26 +45,16 @@ Create a Vagrantfile at /root/kubernetes folder
 Vagrant.configure("2") do |config|
   config.vm.box = "generic/ubuntu2204"
 
-  # Use your custom private key for SSH
-  config.ssh.private_key_path = File.expand_path("_keys/id_rsa")
+  # Use password instead of SSH key for authentication
+  config.ssh.password = "vagrantpassword"
   config.ssh.insert_key = false
 
-  # Provision all VMs: authorize vagrant and root users with your public key
+  # Provision all VMs: set vagrant and root user password, enable password auth
   config.vm.provision "shell", privileged: true, inline: <<-SHELL
-    PUB_KEY=$(cat _keys/id_rsa.pub)
-
-    # Vagrant user
-    mkdir -p /home/vagrant/.ssh
-    echo "$PUB_KEY" > /home/vagrant/.ssh/authorized_keys
-    chown vagrant:vagrant /home/vagrant/.ssh/authorized_keys
-    chmod 600 /home/vagrant/.ssh/authorized_keys
-
-    # Root user
-    mkdir -p /root/.ssh
-    echo "$PUB_KEY" > /root/.ssh/authorized_keys
-    chmod 600 /root/.ssh/authorized_keys
-
-    # Enable root SSH login
+    echo 'vagrant:vagrantpassword' | chpasswd
+    echo 'root:vagrantpassword' | chpasswd
+    sed -i 's/^PasswordAuthentication no/PasswordAuthentication yes/' /etc/ssh/sshd_config
+    sed -i 's/^#PasswordAuthentication yes/PasswordAuthentication yes/' /etc/ssh/sshd_config
     sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
     sed -i 's/^PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
     systemctl restart sshd
