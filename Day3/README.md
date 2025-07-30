@@ -31,7 +31,7 @@ sudo systemctl status libvirtd
 
 #### Create virtual machines
 
-Let's create a custom network for Kubernetes
+Let's create a custom network for Kubernetes using file virt-net.xml
 ```
 <network>
   <name>k8s</name>
