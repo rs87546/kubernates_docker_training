@@ -51,10 +51,26 @@ Vagrant.configure("2") do |config|
     haproxy.vm.network "private_network", ip: "192.168.56.10"
   
     haproxy.vm.provision "shell", inline: <<-SHELL
-      # Enable root login
-      sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-      # Restart SSH service
+      # Ensure root's home directory has an .ssh directory
+      mkdir -p /root/.ssh
+      chmod 700 /root/.ssh
+      
+      # Enable PermitRootLogin in sshd_config.
+      # The sed command handles both commented and uncommented lines.
+      sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+      
+      # Restart the SSH service to apply changes.
       systemctl restart sshd
+    SHELL
+  
+    # Then, copy the public key from the vagrant user to the root user.
+    # This provisioner also runs with sudo.
+    haproxy.vm.provision "shell", inline: <<-SHELL
+      # Copy the authorized_keys file from the vagrant user to the root user.
+      cp /home/vagrant/.ssh/authorized_keys /root/.ssh/authorized_keys
+      
+      # Ensure correct permissions on the authorized_keys file for root.
+      chmod 600 /root/.ssh/authorized_keys
     SHELL
       
     haproxy.vm.provider "virtualbox" do |vb|
@@ -72,14 +88,30 @@ Vagrant.configure("2") do |config|
     config.vm.define "master0#{i}" do |master|
       master.vm.hostname = "master0#{i}.k8s.rps.com"
       master.vm.network "private_network", ip: "192.168.56.1#{i}"
-      
+          
       master.vm.provision "shell", inline: <<-SHELL
-        # Enable root login
-        sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-        # Restart SSH service
+        # Ensure root's home directory has an .ssh directory
+        mkdir -p /root/.ssh
+        chmod 700 /root/.ssh
+        
+        # Enable PermitRootLogin in sshd_config.
+        # The sed command handles both commented and uncommented lines.
+        sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+        
+        # Restart the SSH service to apply changes.
         systemctl restart sshd
       SHELL
-
+    
+      # Then, copy the public key from the vagrant user to the root user.
+      # This provisioner also runs with sudo.
+      master.vm.provision "shell", inline: <<-SHELL
+        # Copy the authorized_keys file from the vagrant user to the root user.
+        cp /home/vagrant/.ssh/authorized_keys /root/.ssh/authorized_keys
+        
+        # Ensure correct permissions on the authorized_keys file for root.
+        chmod 600 /root/.ssh/authorized_keys
+      SHELL
+        
       master.vm.provider "virtualbox" do |vb|
         vb.memory = 131072
         vb.cpus = 10
@@ -98,12 +130,27 @@ Vagrant.configure("2") do |config|
       worker.vm.network "private_network", ip: "192.168.56.2#{i}"
 
       worker.vm.provision "shell", inline: <<-SHELL
-        # Enable root login
-        sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-        # Restart SSH service
+        # Ensure root's home directory has an .ssh directory
+        mkdir -p /root/.ssh
+        chmod 700 /root/.ssh
+        
+        # Enable PermitRootLogin in sshd_config.
+        # The sed command handles both commented and uncommented lines.
+        sed -i 's/^#PermitRootLogin.*/PermitRootLogin yes/' /etc/ssh/sshd_config
+        
+        # Restart the SSH service to apply changes.
         systemctl restart sshd
       SHELL
+    
+      # Then, copy the public key from the vagrant user to the root user.
+      # This provisioner also runs with sudo.
+      worker.vm.provision "shell", inline: <<-SHELL
+        # Copy the authorized_keys file from the vagrant user to the root user.
+        cp /home/vagrant/.ssh/authorized_keys /root/.ssh/authorized_keys
         
+        # Ensure correct permissions on the authorized_keys file for root.
+        chmod 600 /root/.ssh/authorized_keys
+      SHELL        
       worker.vm.provider "virtualbox" do |vb|
         vb.memory = 131072
         vb.cpus = 10
