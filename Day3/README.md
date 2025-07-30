@@ -100,3 +100,15 @@ sudo su -
 cd /root/kubernetes
 vagrant up
 ```
+
+### Let's setup a HA Kubernetes cluster with 3 masters and 3 worker nodes using Kubespray
+
+Let's clone the kubespray project
+```
+sudo su -
+cd /root/kubernetes
+git clone https://github.com/kubernetes-sigs/kubespray.git
+cd kuberspray
+
+```
+
