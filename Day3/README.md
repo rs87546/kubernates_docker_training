@@ -115,6 +115,27 @@ cd /root/kubernetes
 vagrant up
 ```
 
+```
+sudo virt-builder -l
+
+sudo virt-builder fedora-41  --format qcow2 \
+  --size 20G -o /var/lib/libvirt/images/ocp-bastion-server.qcow2 \
+  --root-password password:Root@123
+
+sudo virt-install \
+  --name ocp-bastion-server \
+  --ram 4096 \
+  --vcpus 2 \
+  --disk path=/var/lib/libvirt/images/ocp-bastion-server.qcow2 \
+  --os-variant rhel8.0 \
+  --network bridge=openshift4 \
+  --graphics none \
+  --serial pty \
+  --console pty \
+  --boot hd \
+  --import
+```
+
 ### Let's setup a HA Kubernetes cluster with 3 masters and 3 worker nodes using Kubespray
 
 Let's clone the kubespray project
@@ -132,4 +153,6 @@ ssh-keygen
 ansible-playbook -i inventory/mycluster/ cluster.yml -b -v \
   --private-key=~/.ssh/id_ed25519
 ```
+
+
 
