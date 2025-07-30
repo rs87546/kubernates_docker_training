@@ -83,7 +83,73 @@ Vagrant.configure("2") do |config|
 end  
 </pre>
 
-Let's clone the kubespray
+#### Install this on all nodes except the HAProxy VM
+```
+#!/bin/bash
+
+# Disable swap
+swapoff -a
+sed -i '/ swap / s/^/#/' /etc/fstab
+
+# Install dependencies
+apt-get update
+apt-get install -y apt-transport-https curl ca-certificates gnupg lsb-release containerd
+sudo apt update
+sudo mkdir -p /etc/containerd
+containerd config default | sudo tee /etc/containerd/config.toml
+sed -i 's/SystemdCgroup = false/SystemdCgroup = true/' /etc/containerd/config.toml
+sudo systemctl restart containerd
+
+containerd config dump | grep SystemdCgroup
+
+# Containerd config
+mkdir -p /etc/containerd
+containerd config default > /etc/containerd/config.toml
+systemctl restart containerd
+systemctl enable containerd
+
+# Add Kubernetes repo
+curl -fsSL https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+cat <<EOF > /etc/apt/sources.list.d/kubernetes.list
+deb http://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+# Install Kubernetes components
+sudo rm -f /etc/apt/sources.list.d/kubernetes.list
+sudo rm -f /usr/share/keyrings/kubernetes-archive-keyring.gpg
+sudo mkdir -p /etc/apt/keyrings
+
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.30/deb/Release.key | \
+  gpg --dearmor | sudo tee /etc/apt/keyrings/kubernetes-apt-keyring.gpg > /dev/null
+
+echo "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.30/deb/ /" | \
+  sudo tee /etc/apt/sources.list.d/kubernetes.list > /dev/null
+
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+sudo apt-mark hold kubelet kubeadm kubectl
+
+# Enable kernel modules and sysctl settings
+modprobe overlay
+modprobe br_netfilter
+
+tee /etc/modules-load.d/k8s.conf <<EOF
+overlay
+br_netfilter
+EOF
+
+tee /etc/sysctl.d/k8s.conf <<EOF
+net.bridge.bridge-nf-call-ip6tables = 1
+net.bridge.bridge-nf-call-iptables  = 1
+net.ipv4.ip_forward = 1
+EOF
+
+sysctl --system
+
+ps -ef | grep kubelet | grep -E 'cgroup-driver=systemd|config='
+```
+
+#### Let's clone the kubespray
 
 ```
 cd ~
