@@ -977,6 +977,13 @@ kubectl apply -f calico.ymal
 kubectl get pods --all-namespaces
 
 Once all pods are stable, you can join the master nodes one by one, followed by worker nodes
+
+
+In case, you forgot to save the join tokens or it has expired
+```
+sudo kubeadm token create --print-join-command --ttl 0 --usages signing,authentication --description "new-control-plane-token"
+```
+
 ```
 
 #### Joining Master02 VM
