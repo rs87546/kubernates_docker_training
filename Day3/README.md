@@ -975,7 +975,7 @@ kubectl apply -f calico.ymal
 
 ## Check if all pods are running without any error
 kubectl get pods --all-namespaces
-
+```
 Once all pods are stable, you can join the master nodes one by one, followed by worker nodes
 
 
