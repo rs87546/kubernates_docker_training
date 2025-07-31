@@ -47,3 +47,37 @@ curl http://192.168.100.50
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/2a097b01-078d-4b0c-b3c4-843bac82c548" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/701d50c4-6fc7-4fe7-abef-995b5ec83b4c" />
 
+## Lab - Creating a NodePort external service for nginx deployment
+You need to delete the existing service for nginx deployment
+```
+kubectl delete svc/nginx -n jegan
+```
+
+Create a nodeport service for nginx deployment
+```
+kubectl expose deploy/nginx --type=NodePort --port=80 -n jegan
+```
+
+List the service
+```
+kubectl get svc -n jegan
+kubectl describe svc/nginx -n jegan
+```
+
+In order to access the NodePort external service, we need to find the IP address of our k8s cluster nodes
+```
+kubectl get nodes -o wide
+```
+
+Now you can access your nodeport service
+```
+curl http://<master1-ip>:<node-port-of-your-nginx-service>
+curl http://<master2-ip>:<node-port-of-your-nginx-service>
+curl http://<master3-ip>:<node-port-of-your-nginx-service>
+curl http://<worker1-ip>:<node-port-of-your-nginx-service>
+curl http://<worker2-ip>:<node-port-of-your-nginx-service>
+curl http://<worker3-ip>:<node-port-of-your-nginx-service>
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/20198625-4e32-48e7-8467-eb869e685593" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/64115d9b-ef12-45ef-b190-ecd3cc14fd54" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/723a6f52-a6cf-4b77-9d79-c7feedd65d8d" />
