@@ -199,3 +199,20 @@ Expected output
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/2a68d106-c5f9-49e1-bf89-651bc61ef896" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/393df17b-7168-48c8-b13b-f46b29183544" />
 
+## Lab - Deploying multi-pod application ( Wordpress with Mariadb DB - Do this in minikube )
+```
+cd ~/kubernetes-july-2025
+git pull
+cd Day4/wordpress-with-configmaps-and-secrets
+ls
+./deploy.sh
+
+kubectl get po
+kubectl get svc
+```
+Expected output
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/20894b7c-2703-4011-9f46-2f5ecb71a68d" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/fd72adfb-f65c-4538-9631-ca2941cc1fcf" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/5d077986-9531-4883-abfe-1937b0aaf0fd" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/b0a906f5-975d-4caf-8319-67d5d46e7b61" />
+
