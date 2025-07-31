@@ -146,3 +146,40 @@ kubectl get pods -n jegan
 ```
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/842e0d65-a995-4920-958e-8fcaf5a808ba" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/7beaefd4-f766-4207-8be6-f7c67ff1becc" />
+
+
+## Lab - Ingress
+Make sure you have two deployments and two services created for those 2 deployments
+```
+kubectl get deploy -n jegan
+kubectl get svc -n jegan
+```
+
+Let's create an ingress for the above two services
+```
+apiVersion: networking.k8s.io/v1 
+kind: Ingress
+metadata:
+  name: tektutor
+  annotations:
+    haproxy.router.openshift.io/rewrite-target: /
+spec:
+  rules:
+  - host: tektutor.k8s.rps.com
+    http:
+      paths:
+      - path: /nginx
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              number: 80
+      - path: /hello
+        pathType: Prefix
+        backend:
+          service:
+            name: hello
+            port:
+              number: 8080
+```
