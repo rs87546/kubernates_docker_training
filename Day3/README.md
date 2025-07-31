@@ -1034,6 +1034,14 @@ spec:
   - custom-metallb-address-pool
 ```
 
+Create an install of metallb, file name metallb.yml
+```
+apiVersion: metallb.io/v1beta1
+kind: MetalLB
+metadata:
+  name: metallb
+  namespace: metallb-system
+```
 
 ## Demo - Installing NFS Server in Ubuntu
 ```
