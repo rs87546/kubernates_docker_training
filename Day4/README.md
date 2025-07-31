@@ -136,3 +136,13 @@ kubectl delete -f nginx-clusterip-svc.yml
 kubectl apply -f nginx-nodeport-svc.yml
 kubectl get svc
 ```
+
+## Lab - Scale up/down in declarative style
+```
+kubectl get pods -n jegan
+cat nginx-deploy.yml  # Edit this file and change the replicas from 3 to 5 and save it
+kubectl apply -f nginx-deploy.yml
+kubectl get pods -n jegan
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/842e0d65-a995-4920-958e-8fcaf5a808ba" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/7beaefd4-f766-4207-8be6-f7c67ff1becc" />
