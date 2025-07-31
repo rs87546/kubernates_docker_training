@@ -7,7 +7,7 @@ spec:
     matchLabels:
       name: jegan # Replace 'jegan' with your name
   accessModes:
-  - ReadWiriteOnce
+  - ReadWriteOnce
   volumeMode: Filesystem
   resources:
     requests:

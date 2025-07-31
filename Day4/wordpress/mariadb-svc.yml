@@ -6,9 +6,9 @@ metadata:
   name: mariadb
 spec:
   ports:
-  - port: "3306" 
-    protocolo: TCP
-    targetPort: "3306" 
+  - port: 3306 
+    protocol: TCP
+    targetPort: 3306 
   selector:
     app: mariadb
   type: ClusterIP

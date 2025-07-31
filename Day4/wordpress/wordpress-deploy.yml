@@ -1,6 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
-metada:
+metadata:
   name: wordpress
   labels:
     app: wordpress
@@ -10,13 +10,13 @@ spec:
     matchLabels:
       app: wordpress
   template:
-    metada:
+    metadata:
       labels:
         app: wordpress
     spec:
       volumes:
       - name: wordpress-storage
-        peristentVolumeClaim:
+        persistentVolumeClaim:
           claimName: wordpress-pvc-jegan # Replace 'jegan' with your name
       containers:
       - image: bitnami/wordpress:latest

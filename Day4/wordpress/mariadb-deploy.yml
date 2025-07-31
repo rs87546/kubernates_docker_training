@@ -1,6 +1,6 @@
 apiVersion: apps/v1
 kind: Deployment
-metada:
+metadata:
   name: mariadb
   labels:
     app: mariadb
@@ -10,13 +10,13 @@ spec:
     matchLabels:
       app: mariadb
   template:
-    metada:
+    metadata:
       labels:
         app: mariadb
     spec:
       volumes:
       - name: mariadb-storage
-        peristentVolumeClaim:
+        persistentVolumeClaim:
           claimName: mariadb-pvc-jegan # Replace 'jegan' with your name
       containers:
       - image: bitnami/mariadb:latest
