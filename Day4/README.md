@@ -1,4 +1,4 @@
-# Day 4
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/e3c113ee-ed46-4301-82b2-1b178e20b641" /># Day 4
 
 ## Lab - Creating an external LoadBalancer service for nginx deployment
 
@@ -216,3 +216,77 @@ Expected output
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/5d077986-9531-4883-abfe-1937b0aaf0fd" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/b0a906f5-975d-4caf-8319-67d5d46e7b61" />
 
+## Lab - Ingress
+First make sure ingress is enabled in your minikube
+
+```
+minikube addons enable ingress
+minikube addons list
+```
+
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/4598fa5b-c948-4050-8e7f-c424feeac92b" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/d238d6e9-e1ee-4fc6-b8e1-46b37f210852" />
+
+To enable LoadBalancer service, we need enable metallb 
+```
+minikube addons enable metallb
+minikube addons configure metallb
+# Enter Load Balancer Start IP: 192.168.49.100
+# Enter Load Balancer Start IP: 192.168.49.150
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/cf921df2-a7ee-4e3c-bf31-ed71ebcd0174" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/a5a417ff-ded0-43a6-9546-e0cf94164936" />
+
+Let's deploy two applications
+```
+kubectl create deploy nginx --image=nginx:latest --replicas=3
+kubectl create deploy nginx --image=tektutor/hello-ms:1.0 --replicas=3
+
+kubectl expose deploy/nginx --type=LoadBalancer --port=80
+kubectl expose deploy/hello --type=LoadBalancer --port=8080
+
+kubectl get svc
+kubectl get svc
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/d28d6e94-fc33-4f6f-9d24-825bfbb40829" />
+
+Let's create the ingress, ingress.yml
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tektutor
+  namespace: jegan
+  annotations:
+    kubernetes.io/ingress.class: haproxy 
+spec:
+  rules:
+  - host: nginx.tektutor.org
+    http:
+      paths:
+      - path: /nginx
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              number: 80
+      - path: /hello
+        pathType: Prefix
+        backend:
+          service:
+            name: hello 
+            port:
+              number: 8080
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/c5cc2fc6-6f04-424a-8d17-2da84d4b4b52" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/f2a6b13c-3f53-40f9-9107-5b4717284bf5" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/0cb16d35-a72b-4dde-ba10-85b4541e989f" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/763a7f6a-4ac7-4a92-8139-fa121beeb609" />
+
+
+Let's apply
+```
+kubectl apply -f ingress.yml
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/7bcd884b-b0d1-46c6-9b3f-466b0e6a8223" />
