@@ -241,9 +241,9 @@ defaults
     log     global
     mode    tcp
     option  tcplog
-    timeout connect 10s
-    timeout client  1m
-    timeout server  1m
+    timeout connect 10000ms   # Increased from 5s to 10s
+    timeout client 60000ms    # Increased from 50s to 60s
+    timeout server 60000ms    # Increased from 50s to 60s
 
 # Frontend for Kubernetes API
 frontend k8s_api
