@@ -1010,6 +1010,30 @@ At this point you should have a working cluster with all 6 nodes reported in Rea
 ```
 kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.15.2/config/manifests/metallb-native.yaml
 ```
+#### Configuring Metallb Operator by allocating 
+```
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: custom-metallb-address-pool
+  namespace: metallb-system
+spec:
+  addresses:
+  - 192.168.100.50-192.168.100.100
+```
+
+Enable the custom address pool allocated
+```
+apiVersion: metallb.io/v1beta1
+kind: BGPAdvertisement
+metadata:
+  name: external
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+  - custom-metallb-address-pool
+```
+
 
 ## Demo - Installing NFS Server in Ubuntu
 ```
