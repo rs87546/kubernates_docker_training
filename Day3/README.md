@@ -982,6 +982,8 @@ Once all pods are stable, you can join the master nodes one by one, followed by 
 In case, you forgot to save the join tokens or it has expired
 ```
 sudo kubeadm token create --print-join-command --ttl 0 --usages signing,authentication --description "new-control-plane-token"
+sudo kubeadm init phase upload-certs --upload-certs
+
 ```
 
 ```
