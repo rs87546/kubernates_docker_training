@@ -81,3 +81,31 @@ curl http://<worker3-ip>:<node-port-of-your-nginx-service>
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/20198625-4e32-48e7-8467-eb869e685593" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/64115d9b-ef12-45ef-b190-ecd3cc14fd54" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/723a6f52-a6cf-4b77-9d79-c7feedd65d8d" />
+
+## Lab - Declaratively deploying nginx using yaml manifest files
+
+Delete your existing namespace to free-up resources
+```
+kubectl delete ns/jegan
+```
+
+Deploy nginx
+```
+kubectl create ns jegan
+kubectl create deploy nginx --image=nginx:latest --replicas=3 -n jegan -o yaml --dry-run=client
+kubectl create deploy nginx --image=nginx:latest --replicas=3 -n jegan -o yaml --dry-run=client > nginx-deploy.yml
+
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/dcd03202-c0db-4936-87d8-db1c46dbee20" />
+
+Declaratively deploy nginx, before apply ensure you updated the imagePullPolicy to IfNotPresent
+```
+cat nginx-deploy.yml
+kubectl apply -f nginx-deploy.yml
+kubectl get deploy,rs,po -n jegan
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/f2ed1462-a2cf-4280-b12f-62c38899c285" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/000dae65-5a0d-44f6-ad3b-ebc0e81648ec" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/40d1bbb2-4422-4399-bc1c-9faf7a0d3c25" />
+
+
