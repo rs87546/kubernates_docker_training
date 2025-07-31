@@ -1041,12 +1041,12 @@ spec:
   - custom-metallb-address-pool
 ```
 
-Create an install of metallb, file name metallb.yml
+Create an l2 advt, file name l2.yml
 ```
 apiVersion: metallb.io/v1beta1
-kind: MetalLB
+kind: L2Advertisement
 metadata:
-  name: metallb
+  name: l2
   namespace: metallb-system
 ```
 
