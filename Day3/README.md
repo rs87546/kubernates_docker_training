@@ -1051,6 +1051,28 @@ metadata:
 ```
 
 
+Testing Ingress
+```
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: tektutor
+  namespace: jegan
+  annotations:
+    kubernetes.io/ingress.class: haproxy 
+spec:
+  rules:
+  - host: nginx.tektutor.org
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx
+            port:
+              number: 80
+```
 
 ## Demo - Installing NFS Server in Ubuntu
 ```
