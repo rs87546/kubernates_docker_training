@@ -183,3 +183,19 @@ spec:
             port:
               number: 8080
 ```
+
+## Lab - Deploying multi-pod application ( Wordpress with Mariadb DB - Do this in minikube )
+In case you are doing the exercise in minikube, in the deploy.sh and undeploy.sh comment the mariadb-pv.yml wordpress-pv.yml
+
+```
+cd ~/kubernetes-july-2025
+git pull
+cd Day4/wordpress
+ls
+./deploy.sh
+```
+
+Expected output
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/2a68d106-c5f9-49e1-bf89-651bc61ef896" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/393df17b-7168-48c8-b13b-f46b29183544" />
+
