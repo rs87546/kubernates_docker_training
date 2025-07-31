@@ -108,4 +108,31 @@ kubectl get deploy,rs,po -n jegan
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/000dae65-5a0d-44f6-ad3b-ebc0e81648ec" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/40d1bbb2-4422-4399-bc1c-9faf7a0d3c25" />
 
+## Lab - Declaratively creating a clusterip internal service
+```
+kubectl get deploy -n jegan
+kubectl expose deploy/nginx --type=ClusterIP --port=80 -o yaml --dry-run=client -n jegan
+kubectl expose deploy/nginx --type=ClusterIP --port=80 -o yaml --dry-run=client -n jegan > nginx-clusterip-svc.yml
+kubectl apply -f nginx-clusterip-svc.yml
+kubectl get svc
+```
 
+## Lab - Declaratively creating a loadbalancer external service
+```
+kubectl get deploy -n jegan
+kubectl expose deploy/nginx --type=LoadBalancer --port=80 -o yaml --dry-run=client -n jegan
+kubectl expose deploy/nginx --type=LoadBalancer --port=80 -o yaml --dry-run=client -n jegan > nginx-lb-svc.yml
+kubectl apply -f nginx-lb-svc.yml
+kubectl get svc
+```
+## Lab - Declaratively creating a nodeport external service
+```
+kubectl get deploy -n jegan
+kubectl expose deploy/nginx --type=NodePort --port=80 -o yaml --dry-run=client -n jegan
+kubectl expose deploy/nginx --type=NodePort --port=80 -o yaml --dry-run=client -n jegan > nginx-nodeport-svc.yml
+
+kubectl delete -f nginx-clusterip-svc.yml
+
+kubectl apply -f nginx-nodeport-svc.yml
+kubectl get svc
+```
