@@ -27,6 +27,22 @@
     - in case any application attempts to run as adminstrator or attempts to modify anything outside home directory as admin, those Pods will be knocked off ( wont't be allowed to run )
     - RHCOS comes with pre-installed CRI-O container runtime and Podman container engine
     - comes with crictl client tool
-  
+- Openshift additional features added on top Kubernetes
+  - Webconsole GUI
+  - User Management
+  - Internal Image Registry
+  - Pre-integrated Prometheus & Graphana for Performance Monitoring
+  - Pre-integrated Red Hat Marketplace to download & install Openshift Operators from within Openshift webconsole
+  - a new feature called Project ( based on Kubernetes namespace )
+  - a new feature called Route ( based on Kubernetes ingress )
+  - BuildConfigs & Build
+  - S2I ( Source to Image )
+    - application can be deployed from source code from Version Control ( GitHub, etc )
+    - kubernetes only allows deploying application from readily build container images
+    - supports different strategies like docker, source, etc
+  - ImageStream
+    - a new feature introduced in Openshift
+    - is an object ( a folder that maps to Intenal Openshift Container Registry )
+    - within an imagestream many version(tag) of the same image can be stored
 
 </pre>
