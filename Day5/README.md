@@ -95,3 +95,8 @@ oc create deploy nginx --image=bitnami/nginx:latest --replicas=3 -o yaml --dry-r
 ```
 #### Edit the nginx-deploy.yml and make sure you add imagePullPolicy: IfNotPresent before applying
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/0e3eaf09-8292-4077-a719-08f48719ca63" />
+
+Let's deploy
+```
+oc apply -f nginx-deploy.yml
+```
