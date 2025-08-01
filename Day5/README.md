@@ -135,7 +135,7 @@ oc new-app --name=hello https://github.com/tektutor/spring-ms.git --strategy=doc
 
 ```
 oc new-project jegan
-oc new-app --name=hello https://github.com/tektutor/spring-ms.git --strategy=docker
+oc new-app --name=hello https://github.com/tektutor/spring-ms.git --strategy=source
 ```
 
 
