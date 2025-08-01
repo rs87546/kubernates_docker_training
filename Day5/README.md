@@ -20,6 +20,13 @@
     - there is a opensource CoreOS called Fedora CoreOS can be used in K8s cluster
     - is more secure compared to other Linux distros, provides equivalent or slightly better security than RHEL
     - it is also possible to upgrade Openshift using oc commands if RHCOS is installed in all nodes ( master & workers ), which is recommended by Red Hat 
+    - it enforces best practices are followed
+    - some of the folders are ready-only, hence we won't be able to modify anything on read-only folder
+    - ports below 1024 are reserved for Openshift's internal usage, hence user applications won't be able to use those ports
+    - applications can only run as non-administrator (rootless) user
+    - in case any application attempts to run as adminstrator or attempts to modify anything outside home directory as admin, those Pods will be knocked off ( wont't be allowed to run )
+    - RHCOS comes with pre-installed CRI-O container runtime and Podman container engine
+    - comes with crictl client tool
   
 
 </pre>
