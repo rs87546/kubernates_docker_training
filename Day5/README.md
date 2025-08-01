@@ -1,5 +1,12 @@
 # Day 5
 
+## Info - Kindly provide your training feedback here
+<pre>
+https://survey.zohopublic.com/zs/aoD5lB  
+</pre>  
+
+## Info - Also complete the post test from your lab machine just like you did the pre-test
+
 ## Info - Red Hat Openshift Overview
 <pre>
 - is a Red Hat's distribution of Kubernetes with many additional features 
