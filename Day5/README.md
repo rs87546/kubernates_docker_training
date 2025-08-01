@@ -99,4 +99,12 @@ oc create deploy nginx --image=bitnami/nginx:latest --replicas=3 -o yaml --dry-r
 Let's deploy
 ```
 oc apply -f nginx-deploy.yml
+
+oc expose deploy/nginx --port=8080 -o yaml --dry-run=client > nginx-svc.yml
+oc apply -f nginx-svc.yml
+
+oc expose svc/nginx -o yaml --dry-run=client > nginx-route.yml
+oc apply -f nginx-route.yml
+
+oc get route
 ```
