@@ -86,5 +86,12 @@ oc get project
 
 oc get namespaces
 oc get ns
-
 ```
+
+## Lab - Let's deploy our first applicaiton into openshift
+```
+oc project jegan
+oc create deploy nginx --image=bitnami/nginx:latest --replicas=3 -o yaml --dry-run=client > nginx-deploy.yml
+```
+#### Edit the nginx-deploy.yml and make sure you add imagePullPolicy: IfNotPresent before applying
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/0e3eaf09-8292-4077-a719-08f48719ca63" />
