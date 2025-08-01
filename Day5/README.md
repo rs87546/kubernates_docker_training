@@ -39,7 +39,7 @@
   - S2I ( Source to Image )
     - application can be deployed from source code from Version Control ( GitHub, etc )
     - kubernetes only allows deploying application from readily build container images
-    - supports different strategies like docker, source, etc
+    - supports different strategies like docker, source, custom, pipeline, etc
   - ImageStream
     - a new feature introduced in Openshift
     - is an object ( a folder that maps to Intenal Openshift Container Registry )
