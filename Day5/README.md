@@ -57,5 +57,30 @@ kubectl get nodes -o wide
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/5edc2c93-1d2b-4cba-898b-9d1fb19189ad" />
 <img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/d2ccac31-29fd-4589-b630-958ed17b8968" />
 
+## Lab - Finding more details about an Openshift node
+```
+oc describe node/master01.k8s.rps.com
+```
 
+## Lab - Creating a project to deploy our applications
+Replace 'jegan' with your name
+``
+oc new-project jegan
+``
 
+Find your currently active project
+```
+oc project
+```
+
+Switching between projects
+```
+oc project default
+oc project jegan
+```
+
+Listing projects
+```
+oc get projects
+oc get project
+```
