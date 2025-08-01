@@ -44,5 +44,18 @@
     - a new feature introduced in Openshift
     - is an object ( a folder that maps to Intenal Openshift Container Registry )
     - within an imagestream many version(tag) of the same image can be stored
-
 </pre>
+
+## Lab - Listing the Openshift nodes
+```
+oc get nodes
+kubectl get nodes
+
+oc get nodes -o wide
+kubectl get nodes -o wide
+```
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/5edc2c93-1d2b-4cba-898b-9d1fb19189ad" />
+<img width="1920" height="1168" alt="image" src="https://github.com/user-attachments/assets/d2ccac31-29fd-4589-b630-958ed17b8968" />
+
+
+
