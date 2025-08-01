@@ -108,3 +108,34 @@ oc apply -f nginx-route.yml
 
 oc get route
 ```
+
+## Lab - Deploying your application from GitHub source code using S2I docker strategy
+<pre>
+- In this case, Openshift will clone the repository and looks for a Dockerfile in your source code repo.
+- Based on the Dockerfile it builds your application to application binary 
+- it then prepares a custom container image with your application binary
+- Pushes the application binary into the Openshift Internal Image Registry
+- Using your Custom Image from Openshift's Internal registry, it deploys the application into Openshift
+- It also creates a service, just need to create an external route to click and access your application
+</pre>
+```
+oc new-project jegan
+oc new-app --name=hello https://github.com/tektutor/spring-ms.git --strategy=docker
+```
+
+## Lab - Deploying your application from GitHub source code using S2I source strategy
+<pre>
+- In this case, Openshift will clone the repository and it will generate a Dockerfile using your image suggestion on the command
+- Based on the auto-generated Dockerfile it builds your application to application binary 
+- it then prepares a custom container image with your application binary
+- Pushes the application binary into the Openshift Internal Image Registry
+- Using your Custom Image from Openshift's Internal registry, it deploys the application into Openshift
+- It also creates a service, just need to create an external route to click and access your application
+</pre>
+
+```
+oc new-project jegan
+oc new-app --name=hello https://github.com/tektutor/spring-ms.git --strategy=docker
+```
+
+
