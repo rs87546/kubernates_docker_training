@@ -83,4 +83,8 @@ Listing projects
 ```
 oc get projects
 oc get project
+
+oc get namespaces
+oc get ns
+
 ```
